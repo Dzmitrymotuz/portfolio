@@ -12,7 +12,7 @@ import HomeInfo from '../components/HomeInfo';
 import { Html } from "@react-three/drei";
 
 
-const House = ({setRotating, rotating, ...props}) => {
+const House = ({setRotating, rotating, getStageFromHouse, ...props}) => {
     const HouseRef = useRef()
     const {gl, viewport} = useThree()
     const {nodes, materials, scene, animations} = useGLTF(HouseScene)
@@ -26,6 +26,8 @@ const House = ({setRotating, rotating, ...props}) => {
     const lastX = useRef(0)
     const rotationSpeed = useRef(0)
     const dampingFactor = 0.95
+
+    getStageFromHouse(stage)
 
     const handleMouseDown =(e)=>{
         e.stopPropagation()
@@ -85,7 +87,7 @@ const House = ({setRotating, rotating, ...props}) => {
     useFrame(()=>{
         if(!rotating) {
             rotationSpeed.current *= dampingFactor;
-        //rotates the house when idle
+            //rotates the house when idle
             HouseRef.current.rotation.y -= (5%2)*idleRotation
             if(HouseRef.current.rotation.y < -100) {
               setIdleRotation(0)
@@ -96,20 +98,23 @@ const House = ({setRotating, rotating, ...props}) => {
                 rotationSpeed.current = 0;
             }
                 HouseRef.current.rotation.y += rotationSpeed.current;
-            }else{
-                console.log('not rotating')
             }
+
             const rotation = HouseRef.current.rotation.y
             const normalizeRotation = ((rotation % (2 * Math.PI)) + 2 * Math.PI)%(2*Math.PI);
-            console.log(normalizeRotation)
-            if (normalizeRotation > 0.5 && normalizeRotation < 2){
+            // console.log(normalizeRotation)
+            if (normalizeRotation > 0.5 && normalizeRotation < 1.2){
               setStage('1')
-            } else if (normalizeRotation > 2.5 && normalizeRotation < 4){
+            } else if (normalizeRotation > 5.4 && normalizeRotation < 6.0){
               setStage('2')
-            } else {
+            } else if (normalizeRotation > 3.5 && normalizeRotation < 4.2){
+              setStage('3')
+            } else if (normalizeRotation > 1.7 && normalizeRotation < 2.4){
+              setStage('4')
+            }else{
               setStage(0)
             }
-            console.log(stage)
+            // console.log(normalizeRotation)
     });
 
     useEffect(()=>{
@@ -132,20 +137,50 @@ const House = ({setRotating, rotating, ...props}) => {
     }, [gl, handleMouseDown, handleMouseMove, handleMouseUp])
 
   return (
-    
     <a.group {...props} ref={HouseRef} castShadow >
-
-        <Html>
-        <div className='absolute top-28 left-0 right-0 z-10 flex items-center justify-center'>
-        {stage != 0 && <HomeInfo stage={stage}/>}
-        </div>
-        </Html>
-
         {/* <a.primitive object={scene} castShadow receiveShadow/> */}
         <a.group  ref={butterflyRef} castShadow receiveShadow>
-        <a.primitive position={[3, 3, 4]} scale={[0.3, 0.3, 0.3]} rotation={[0, 0.5, 1]} object={butterflyScene} castShadow receiveShadow/>
+        <primitive position={[3, 3, 4]} scale={[0.3, 0.3, 0.3]} rotation={[0, 0.5, 1]} object={butterflyScene} castShadow receiveShadow/>
         </a.group>
+
+        <group position={[0.381, -0.01, 3.797]}>
         <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.pitcher3_1.geometry}
+          material={materials["Mat.1"]}
+          position={[-0.149, 0.01, 0.358]}
+        />
+        <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.pitcher1_1.geometry}
+          material={materials["Mat.1"]}
+          position={[0.113, 0.018, -0.242]}
+        />
+        <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.pitcher2_1.geometry}
+          material={materials.Mat}
+          position={[-0.074, -0.009, -0.429]}
+        />
+        <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.pitcher4_1.geometry}
+          material={materials.Mat}
+          position={[0.122, -0.009, 0.281]}
+        />
+        <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.pitcher_1.geometry}
+          material={materials.Mat}
+          position={[-0.014, -0.009, 0.032]}
+        />
+      </group>
+      <mesh
         castShadow
         receiveShadow
         geometry={nodes.Rose.geometry}
@@ -215,144 +250,213 @@ const House = ({setRotating, rotating, ...props}) => {
           material={materials.elki2}
         />
       </group>
-      <group position={[-6.21, 0.387, 4.019]}>
+      <group position={[-1.022, 0.342, 3.208]}>
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.bushes_sw1_1.geometry}
-          material={materials.elki2}
-          position={[-0.256, -0.108, 0.217]}
-          rotation={[0, 0, 0.235]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.bushes_sw_1.geometry}
-          material={materials.elki2}
-          position={[0.086, 0.243, -0.449]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.bushes_sw7_1.geometry}
-          material={materials.elki2}
-          position={[0.17, -0.135, 0.231]}
-          rotation={[0.339, 0, 0]}
-        />
-      </group>
-      <group position={[-7.664, 0.327, -5.139]}>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.bushes_sw1_3.geometry}
-          material={materials.elki2}
-          position={[0.37, -0.109, -0.245]}
-          rotation={[-0.353, 0, 0]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.bushes_sw3_1.geometry}
-          material={materials.elki2}
-          position={[0.763, -0.121, 0.142]}
-          rotation={[-1.332, -1.286, -1.416]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.bushes_sw2_1.geometry}
+          geometry={nodes.bushFront.geometry}
           material={materials.elki}
-          position={[-0.218, -0.158, -0.318]}
-          rotation={[2.362, -0.914, 2.524]}
+          position={[7.532, -0.021, -2.144]}
         />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.bushes_sw_3.geometry}
-          material={materials.elki2}
-          position={[-0.058, 0.196, 0.563]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.bushes_sw4_1.geometry}
-          material={materials.elki}
-          position={[0.94, -0.246, -0.717]}
-          rotation={[-0.613, -0.936, -0.556]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.bushes_sw5_1.geometry}
-          material={materials.elki2}
-          position={[-1.055, -0.102, 0.649]}
-          rotation={[-2.53, -0.804, -2.847]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.bushes_sw6_1.geometry}
-          material={materials.elki}
-          position={[-0.664, -0.185, 1.192]}
-          rotation={[-3.087, 1.11, -3.138]}
-        />
-      </group>
-      <group position={[7.563, 0.358, 4.73]} rotation={[0, 0.182, 0]}>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.bushes_sw1_5.geometry}
-          material={materials.elki}
-          position={[-0.47, 0.051, 1.624]}
-          rotation={[-0.353, 0, 0]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.bushes_sw3_3.geometry}
-          material={materials.elki}
-          position={[0.172, -0.121, 1.317]}
-          rotation={[-1.388, -0.442, -1.684]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.bushes_sw2_3.geometry}
-          material={materials.elki2}
-          position={[0.916, -0.158, 0.272]}
-          rotation={[2.094, -0.96, 2.583]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.bushes_sw_5.geometry}
-          material={materials.elki}
-          position={[-0.058, 0.196, 0.563]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.bushes_sw4_3.geometry}
-          material={materials.elki2}
-          position={[0.659, -0.042, 0.665]}
-          rotation={[-2.091, -0.371, -1.872]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.bushes_sw5_3.geometry}
-          material={materials.elki2}
-          position={[-1.055, -0.102, 0.649]}
-          rotation={[-2.53, -0.804, -2.847]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.bushes_sw6_3.geometry}
-          material={materials.elki2}
-          position={[-0.837, -0.185, 2.132]}
-          rotation={[-0.029, 0.551, 0.068]}
-        />
+        <group position={[-5.188, 0.045, 0.811]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw1_1.geometry}
+            material={materials.elki2}
+            position={[-0.256, -0.108, 0.217]}
+            rotation={[0, 0, 0.235]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw_1.geometry}
+            material={materials.elki2}
+            position={[0.086, 0.243, -0.449]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw7_1.geometry}
+            material={materials.elki2}
+            position={[0.17, -0.135, 0.231]}
+            rotation={[0.339, 0, 0]}
+          />
+        </group>
+        <group
+          position={[3.245, -0.047, 6.014]}
+          rotation={[-3.017, 0.487, Math.PI]}
+        >
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw1_3.geometry}
+            material={materials.elki2}
+            position={[0.272, -0.1, -0.18]}
+            rotation={[-0.353, 0, 0]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw3_1.geometry}
+            material={materials.elki2}
+            position={[0.515, -0.272, 0.092]}
+            rotation={[-1.332, -1.286, -1.416]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw2_1.geometry}
+            material={materials.elki}
+            position={[-0.16, -0.145, -0.234]}
+            rotation={[2.362, -0.914, 2.524]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw_3.geometry}
+            material={materials.elki2}
+            position={[-0.042, 0.181, 0.414]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw4_1.geometry}
+            material={materials.elki}
+            position={[0.492, -0.142, -0.408]}
+            rotation={[-0.613, -0.936, -0.556]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw5_1.geometry}
+            material={materials.elki2}
+            position={[-0.346, 0.008, 0.003]}
+            rotation={[-2.53, -0.804, -2.847]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw6_1.geometry}
+            material={materials.elki}
+            position={[-0.471, -0.14, 0.356]}
+            rotation={[-2.225, 0.892, 2.416]}
+          />
+        </group>
+        <group position={[-6.642, -0.014, -8.347]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw1_5.geometry}
+            material={materials.elki2}
+            position={[0.37, -0.109, -0.245]}
+            rotation={[-0.353, 0, 0]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw3_3.geometry}
+            material={materials.elki2}
+            position={[0.763, -0.121, 0.142]}
+            rotation={[-1.332, -1.286, -1.416]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw2_3.geometry}
+            material={materials.elki}
+            position={[-0.218, -0.158, -0.318]}
+            rotation={[2.362, -0.914, 2.524]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw_5.geometry}
+            material={materials.elki2}
+            position={[-0.058, 0.196, 0.563]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw4_3.geometry}
+            material={materials.elki}
+            position={[0.94, -0.246, -0.717]}
+            rotation={[-0.613, -0.936, -0.556]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw5_3.geometry}
+            material={materials.elki2}
+            position={[-1.055, -0.102, 0.649]}
+            rotation={[-2.53, -0.804, -2.847]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw6_3.geometry}
+            material={materials.elki}
+            position={[-0.664, -0.185, 1.192]}
+            rotation={[-3.087, 1.11, -3.138]}
+          />
+        </group>
+        <group position={[8.585, 0.017, 1.522]} rotation={[0, 0.182, 0]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw1_7.geometry}
+            material={materials.elki}
+            position={[-0.47, 0.051, 1.624]}
+            rotation={[-0.353, 0, 0]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw3_5.geometry}
+            material={materials.elki}
+            position={[0.172, -0.121, 1.317]}
+            rotation={[-1.388, -0.442, -1.684]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw2_5.geometry}
+            material={materials.elki2}
+            position={[0.916, -0.158, 0.272]}
+            rotation={[2.094, -0.96, 2.583]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw_7.geometry}
+            material={materials.elki}
+            position={[-0.058, 0.196, 0.563]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw4_5.geometry}
+            material={materials.elki2}
+            position={[0.659, -0.042, 0.665]}
+            rotation={[-2.091, -0.371, -1.872]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw5_5.geometry}
+            material={materials.elki2}
+            position={[-1.055, -0.102, 0.649]}
+            rotation={[-2.53, -0.804, -2.847]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bushes_sw6_5.geometry}
+            material={materials.elki2}
+            position={[-0.837, -0.185, 2.132]}
+            rotation={[-0.029, 0.551, 0.068]}
+          />
+        </group>
       </group>
       <mesh
         castShadow
@@ -377,20 +481,6 @@ const House = ({setRotating, rotating, ...props}) => {
         material={materials.elki}
         position={[3.44, 0.164, 5.558]}
         rotation={[0, -0.721, 0]}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.bushFront.geometry}
-        material={materials.elki}
-        position={[6.51, 0.321, 1.065]}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.bush2.geometry}
-        material={materials.elki2}
-        position={[7.433, 0.33, -1.583]}
       />
       <group position={[-2.5, 5.963, 4.068]} rotation={[0, 0.291, 0]}>
         <group
@@ -637,59 +727,165 @@ const House = ({setRotating, rotating, ...props}) => {
           />
         </group>
       </group>
-      <group
-        position={[-9.72, -0.123, 2.095]}
-        rotation={[0.122, -1.459, -0.117]}
-      >
+      <group position={[-9.409, 1.601, 0.158]}>
         <group
-          position={[-0.06, -0.083, 0.163]}
-          rotation={[0.239, -0.188, 0.211]}
+          position={[-0.311, -1.724, 1.937]}
+          rotation={[0.122, -1.459, -0.117]}
         >
+          <group
+            position={[-0.06, -0.083, 0.163]}
+            rotation={[0.239, -0.188, 0.211]}
+          >
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes["mushroom2-Mat2"].geometry}
+              material={materials["Mat.2"]}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes["mushroom2-Mat"].geometry}
+              material={materials.Mat}
+            />
+          </group>
+          <group
+            position={[-0.127, 0.103, 0.001]}
+            rotation={[-0.078, -0.433, 0.099]}
+          >
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes["mushroom1-Mat2"].geometry}
+              material={materials["Mat.2"]}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes["mushroom1-Mat"].geometry}
+              material={materials.Mat}
+            />
+          </group>
+          <group
+            position={[0.187, -0.021, -0.163]}
+            rotation={[0.275, 0.376, -0.041]}
+          >
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes["mushroom-Mat2"].geometry}
+              material={materials["Mat.2"]}
+            />
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes["mushroom-Mat"].geometry}
+              material={materials.Mat}
+            />
+          </group>
+        </group>
+        <group position={[-0.76, -1.16, 0.361]} rotation={[0, -0.577, 0]}>
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes["mushroom2-Mat2"].geometry}
-            material={materials["Mat.2"]}
+            geometry={nodes.elka1_2.geometry}
+            material={nodes.elka1_2.material}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes["mushroom2-Mat"].geometry}
-            material={materials.Mat}
+            geometry={nodes["elka1-elki_1"].geometry}
+            material={materials.elki}
           />
         </group>
         <group
-          position={[-0.127, 0.103, 0.001]}
-          rotation={[-0.078, -0.433, 0.099]}
+          position={[0.29, -0.705, 0.695]}
+          rotation={[0.602, 1.439, -0.729]}
         >
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes["mushroom1-Mat2"].geometry}
-            material={materials["Mat.2"]}
+            geometry={nodes.elka2_2.geometry}
+            material={nodes.elka2_2.material}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes["mushroom1-Mat"].geometry}
-            material={materials.Mat}
+            geometry={nodes["elka2-elki_1"].geometry}
+            material={materials.elki}
           />
         </group>
-        <group
-          position={[0.187, -0.021, -0.163]}
-          rotation={[0.275, 0.376, -0.041]}
-        >
+        <group position={[0.469, 1.77, -1.057]}>
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes["mushroom-Mat2"].geometry}
-            material={materials["Mat.2"]}
+            geometry={nodes.Cube.geometry}
+            material={nodes.Cube.material}
+            position={[-0.205, -3.602, 0.349]}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes["mushroom-Mat"].geometry}
-            material={materials.Mat}
+            geometry={nodes.Cone7.geometry}
+            material={materials.elki}
+            position={[-0.256, 1.939, 0.314]}
+            rotation={[0.293, -0.027, 0.375]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cone6.geometry}
+            material={materials.elki}
+            position={[-0.021, 1.366, 0.147]}
+            rotation={[0.293, -0.027, 0.375]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cone5.geometry}
+            material={materials.elki}
+            position={[-0.04, 0.822, -0.136]}
+            rotation={[-0.07, -0.027, 0.375]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cone4.geometry}
+            material={materials.elki}
+            position={[0.114, 0.31, -0.129]}
+            rotation={[-0.072, -0.02, 0.272]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cone3.geometry}
+            material={materials.elki}
+            position={[0.141, -0.173, -0.092]}
+            rotation={[0.043, 0.002, -0.023]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cone2.geometry}
+            material={materials.elki}
+            position={[0.082, -0.726, -0.051]}
+            rotation={[0.031, -0.004, 0.055]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cone1.geometry}
+            material={materials.elki}
+            position={[0.037, -1.41, -0.092]}
+            rotation={[-0.075, -0.004, 0.055]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Cone.geometry}
+            material={materials.elki}
+            position={[-0.057, -2.127, 0.039]}
+            rotation={[-0.075, 0, 0]}
           />
         </group>
       </group>
@@ -853,145 +1049,140 @@ const House = ({setRotating, rotating, ...props}) => {
           />
         </group>
       </group>
-      <group
-        position={[0.516, 0.242, 0.683]}
-        rotation={[-Math.PI, 0.218, -Math.PI]}
-      >
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["redFlowers-Mat2"].geometry}
-          material={materials["Mat.2"]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["redFlowers-elki"].geometry}
-          material={materials.elki}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["redFlowers-Mat1"].geometry}
-          material={materials["Mat.1"]}
-        />
+      <group position={[-2.449, 0.15, 0.308]}>
+        <group
+          position={[2.965, 0.092, 0.375]}
+          rotation={[-Math.PI, 0.218, -Math.PI]}
+        >
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["redFlowers-Mat2"].geometry}
+            material={materials["Mat.2"]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["redFlowers-elki"].geometry}
+            material={materials.elki}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["redFlowers-Mat1"].geometry}
+            material={materials["Mat.1"]}
+          />
+        </group>
+        <group
+          position={[-5.906, -0.243, 4.846]}
+          rotation={[-Math.PI, 1.059, -Math.PI]}
+        >
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["camBoquet2-elki"].geometry}
+            material={materials.elki}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["camBoquet2-Mat1"].geometry}
+            material={materials["Mat.1"]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["camBoquet2-Mat2"].geometry}
+            material={materials["Mat.2"]}
+          />
+        </group>
+        <group
+          position={[5.668, 0.15, 5.705]}
+          rotation={[Math.PI, 0.776, -Math.PI]}
+        >
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["camBoquet-elki"].geometry}
+            material={materials.elki}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["camBoquet-Mat1"].geometry}
+            material={materials["Mat.1"]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["camBoquet-Mat2"].geometry}
+            material={materials["Mat.2"]}
+          />
+        </group>
+        <group position={[-2.498, 0.15, -5.846]} rotation={[0, 0.774, 0]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["camBoquet1-elki"].geometry}
+            material={materials.elki}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["camBoquet1-Mat1"].geometry}
+            material={materials["Mat.1"]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["camBoquet1-Mat2"].geometry}
+            material={materials["Mat.2"]}
+          />
+        </group>
+        <group
+          position={[5.201, 0.092, -9.741]}
+          rotation={[Math.PI, -1.245, Math.PI]}
+        >
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["redFlowers2-Mat2"].geometry}
+            material={materials["Mat.2"]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["redFlowers2-elki"].geometry}
+            material={materials.elki}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["redFlowers2-Mat1"].geometry}
+            material={materials["Mat.1"]}
+          />
+        </group>
+        <group position={[-5.431, -0.242, 4.66]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["redFlowers1-Mat2"].geometry}
+            material={materials["Mat.2"]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["redFlowers1-elki"].geometry}
+            material={materials.elki}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["redFlowers1-Mat1"].geometry}
+            material={materials["Mat.1"]}
+          />
+        </group>
       </group>
-      <group
-        position={[-8.355, -0.094, 5.154]}
-        rotation={[-Math.PI, 1.059, -Math.PI]}
-      >
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["camBoquet2-elki"].geometry}
-          material={materials.elki}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["camBoquet2-Mat1"].geometry}
-          material={materials["Mat.1"]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["camBoquet2-Mat2"].geometry}
-          material={materials["Mat.2"]}
-        />
-      </group>
-      <group
-        position={[3.218, 0.3, 6.012]}
-        rotation={[Math.PI, 0.776, -Math.PI]}
-      >
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["camBoquet-elki"].geometry}
-          material={materials.elki}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["camBoquet-Mat1"].geometry}
-          material={materials["Mat.1"]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["camBoquet-Mat2"].geometry}
-          material={materials["Mat.2"]}
-        />
-      </group>
-      <group position={[-4.948, 0.3, -5.538]} rotation={[0, 0.774, 0]}>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["camBoquet1-elki"].geometry}
-          material={materials.elki}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["camBoquet1-Mat1"].geometry}
-          material={materials["Mat.1"]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["camBoquet1-Mat2"].geometry}
-          material={materials["Mat.2"]}
-        />
-      </group>
-      <group
-        position={[2.752, 0.242, -9.434]}
-        rotation={[Math.PI, -1.245, Math.PI]}
-      >
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["redFlowers2-Mat2"].geometry}
-          material={materials["Mat.2"]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["redFlowers2-elki"].geometry}
-          material={materials.elki}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["redFlowers2-Mat1"].geometry}
-          material={materials["Mat.1"]}
-        />
-      </group>
-      <group position={[-7.881, -0.092, 4.968]}>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["redFlowers1-Mat2"].geometry}
-          material={materials["Mat.2"]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["redFlowers1-elki"].geometry}
-          material={materials.elki}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["redFlowers1-Mat1"].geometry}
-          material={materials["Mat.1"]}
-        />
-      </group>
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.zabor4.geometry}
-        material={materials["Mat.1"]}
-        position={[-1.107, 0.329, 6.449]}
-      />
       <group
         position={[-2.034, 0.713, -6.918]}
         rotation={[-0.025, -0.106, 0.013]}
@@ -1058,6 +1249,13 @@ const House = ({setRotating, rotating, ...props}) => {
           geometry={nodes["Gryadka_s_klubnik0oi1-Mat2_1"].geometry}
           material={materials["Mat.2"]}
         />
+        <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.zabor4_1.geometry}
+          material={materials["Mat.1"]}
+          position={[-0.003, -0.059, 0.079]}
+        />
       </group>
       <group position={[4.69, 0.497, 2.209]}>
         <mesh
@@ -1071,41 +1269,6 @@ const House = ({setRotating, rotating, ...props}) => {
           receiveShadow
           geometry={nodes["pumpkins1-elki"].geometry}
           material={materials.elki}
-        />
-      </group>
-      <group
-        position={[7.907, 3.099, -1.996]}
-        rotation={[Math.PI, -0.038, Math.PI]}
-      >
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["Apple_tree1-Mat"].geometry}
-          material={materials.Mat}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["Apple_tree1-Mat_1"].geometry}
-          material={materials.Mat}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["Apple_tree1-Mat2"].geometry}
-          material={materials["Mat.2"]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["Apple_tree1-elki"].geometry}
-          material={materials.elki}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["Apple_tree1-Mat2_1"].geometry}
-          material={materials["Mat.2"]}
         />
       </group>
       <group position={[4.253, 0.899, 4.16]}>
@@ -1124,15 +1287,25 @@ const House = ({setRotating, rotating, ...props}) => {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes["kolodec1-Mat9"].geometry}
-          material={materials["Mat.9"]}
+          geometry={nodes["kolodec1-Mat"].geometry}
+          material={materials.Mat}
         />
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes["kolodec1-Mat"].geometry}
-          material={materials.Mat}
-        />
+          geometry={nodes.bucket.geometry}
+          material={materials["Mat.1"]}
+          position={[-1.58, -0.888, 0.801]}
+          rotation={[0, -0.525, 0]}
+        >
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Sweep_1.geometry}
+            material={materials["Mat.1"]}
+            position={[0.006, -0.161, -8.255]}
+          />
+        </mesh>
         <mesh
           castShadow
           receiveShadow
@@ -1141,142 +1314,81 @@ const House = ({setRotating, rotating, ...props}) => {
           position={[-0.487, 1.135, 1.474]}
         />
       </group>
-      <group
-        position={[2.179, 1.849, -8.595]}
-        rotation={[-Math.PI, 0.384, -Math.PI]}
-      >
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["Birch1-Mat_1"].geometry}
-          material={materials.Mat}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["Birch1-elki2_1"].geometry}
-          material={materials.elki2}
-        />
-      </group>
-      <group position={[-9.409, 1.601, 0.158]}>
-        <group position={[-0.76, -1.065, 0.361]} rotation={[0, -0.577, 0]}>
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes["elka1-Mat6_1"].geometry}
-            material={materials["Mat.6"]}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes["elka1-elki_1"].geometry}
-            material={materials.elki}
-          />
-        </group>
+      <group position={[1.529, 2.878, -1.696]}>
         <group
-          position={[0.29, -0.705, 0.695]}
-          rotation={[0.602, 1.439, -0.729]}
+          position={[6.102, 0.242, -0.29]}
+          rotation={[Math.PI, -0.038, Math.PI]}
         >
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes["elka2-Mat6_1"].geometry}
-            material={materials["Mat.6"]}
+            geometry={nodes["Apple_tree1-Mat"].geometry}
+            material={materials.Mat}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes["elka2-elki_1"].geometry}
+            geometry={nodes["Apple_tree1-Mat_1"].geometry}
+            material={materials.Mat}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["Apple_tree1-Mat2"].geometry}
+            material={materials["Mat.2"]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["Apple_tree1-elki"].geometry}
             material={materials.elki}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["Apple_tree1-Mat2_1"].geometry}
+            material={materials["Mat.2"]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.bush2.geometry}
+            material={materials.elki2}
+            position={[0.53, -2.887, -0.456]}
+            rotation={[-Math.PI, 0.038, -Math.PI]}
           />
         </group>
-        <group position={[0.469, 1.77, -1.057]}>
+        <group
+          position={[0.65, -1.028, -6.899]}
+          rotation={[-Math.PI, 0.384, -Math.PI]}
+        >
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cube.geometry}
-            material={materials["Mat.6"]}
-            position={[-0.205, -3.602, 0.349]}
+            geometry={nodes["Birch1-Mat_1"].geometry}
+            material={materials.Mat}
           />
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Cone7.geometry}
-            material={materials.elki}
-            position={[-0.256, 1.939, 0.314]}
-            rotation={[0.293, -0.027, 0.375]}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cone6.geometry}
-            material={materials.elki}
-            position={[-0.021, 1.366, 0.147]}
-            rotation={[0.293, -0.027, 0.375]}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cone5.geometry}
-            material={materials.elki}
-            position={[-0.04, 0.822, -0.136]}
-            rotation={[-0.07, -0.027, 0.375]}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cone4.geometry}
-            material={materials.elki}
-            position={[0.114, 0.31, -0.129]}
-            rotation={[-0.072, -0.02, 0.272]}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cone3.geometry}
-            material={materials.elki}
-            position={[0.141, -0.173, -0.092]}
-            rotation={[0.043, 0.002, -0.023]}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cone2.geometry}
-            material={materials.elki}
-            position={[0.082, -0.726, -0.051]}
-            rotation={[0.031, -0.004, 0.055]}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cone1.geometry}
-            material={materials.elki}
-            position={[0.037, -1.41, -0.092]}
-            rotation={[-0.075, -0.004, 0.055]}
-          />
-          <mesh
-            castShadow
-            receiveShadow
-            geometry={nodes.Cone.geometry}
-            material={materials.elki}
-            position={[-0.057, -2.127, 0.039]}
-            rotation={[-0.075, 0, 0]}
+            geometry={nodes["Birch1-elki2_1"].geometry}
+            material={materials.elki2}
           />
         </group>
-      </group>
-      <group position={[-5.499, 3.684, 5.504]}>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["Birch-Mat_1"].geometry}
-          material={materials.Mat}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes["Birch-elki2_1"].geometry}
-          material={materials.elki2}
-        />
+        <group position={[-7.028, 0.807, 7.2]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["Birch-Mat_1"].geometry}
+            material={materials.Mat}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes["Birch-elki2_1"].geometry}
+            material={materials.elki2}
+          />
+        </group>
       </group>
       <group position={[-1.114, 5.483, -1.849]}>
         <mesh

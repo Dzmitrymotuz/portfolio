@@ -16,7 +16,16 @@ export default {
         },
         blue: {
           500: "#2b77e7"
-        }
+        },
+        cream: {
+          500: "#ffeead"
+        },
+        red: {
+          500: "#ff6f69"
+        },
+        yellow: {
+          500: "#ffcc5c"
+        },
       },
       fontFamily: {
         worksans: ["Work Sans", "sans-serif"],

@@ -1,7 +1,6 @@
 import React, { Suspense, useState } from 'react'
 import { OrbitControls, Plane, Stars, Fisheye, Environment, Lightformer} from '@react-three/drei';
 import { Canvas } from '@react-three/fiber'
-
 import { EffectComposer, DepthOfField, Bloom, Noise, Vignette, GodRays} from '@react-three/postprocessing'
 import Loader from '../components/Loader'
 import House from '../models/House'
@@ -9,10 +8,23 @@ import Sky from '../models/Sky'
 import SeagullFly from '../models/Seagull'
 import StorkFly from '../models/srorkFly'
 import Island from '../models/Island'
+import HomeInfo from '../components/HomeInfo';
 
 
 const Home = () => {
   const [rotating, setRotating] =useState(false)
+  const [currentStage, setCurrentStage] = useState(null)
+  const [toggleInfo, setToggleInfo] = useState(false)
+  const [vfx, setVfx] = useState(false)
+
+  const togglePopups=()=>{
+    setToggleInfo(!toggleInfo)
+  }
+  
+
+  const getStageFromHouse=(data)=>{
+    setCurrentStage(data)
+  }
 
   const adjustHouseForScreenSize = () => {
     let screenScale = null;
@@ -21,30 +33,52 @@ const Home = () => {
     if (window.innerWidth < 768 ) {
       screenScale = [3, 3, 3];
     }else{
-      screenScale = [3.5, 3.5, 3.5];
+      screenScale = [3.2, 3.2, 3.2];
     }
     return [screenScale, screenPosition, rotation];
   }
 
   const adjustStorkForScreenSize=()=>{
     let screenScale = [0.5, 0.5, 0.5]
-    let screenPosition = [0, 2, -15]
+    let screenPosition = [0, 2, -8]
     let storkRotation = [0.1, -1.5, 0]
     if(window.innerWidth < 768) {
-      screenScale = [0.3, 0.3, 0.3]
+      screenScale = [0.5, 0.5, 0.5]
     } else {
       screenScale = [0.6, 0.6, 0.6]
       screenPosition=[0, 2, -5]
     }
     return [screenScale, screenPosition, storkRotation]
   }
+
+  const adjustSkyForScreenSize =()=>{
+    let screenscale = [0.9, 0.9, 0.9]
+    let screenPosition = [0, 0, -500]
+    if (window.innerWidth < 768) {
+      screenscale = [0.9, 0.9, 0.9]
+    }else if (window.innerWidth > 768) {
+      screenscale = [1.1, 1.1, 1.1]
+    }
+    return [screenscale, screenPosition]
+  }
     const [houseScale, housePosition, rotation] = adjustHouseForScreenSize();
     const [storkScale, storkPosition, storkRotation] = adjustStorkForScreenSize();
-
+    const [skyScale, skyPosition] = adjustSkyForScreenSize();
   
-
   return (
     <section className='w-full h-screen relative'>
+      <div className='absolute top-28 left-0 right-0 z-10 flex items-center justify-center '>
+        {!toggleInfo && <HomeInfo stage={currentStage}></HomeInfo>}
+      </div>
+      <button className='absolute bottom-5 z-10 right-2 w-20 h-15 rounded-lg bg-white bg-opacity-10 items-center justify-center flex text-[#96ceb4] text-opacity-30 text-sm hover:bg-opacity-100 hover:text-opacity-100 transition-all duration-500 ease-in-out'
+      onClick={togglePopups}>
+        Toggle popups
+      </button>
+      <button className='absolute bottom-20 z-10 right-2 w-20 h-15 rounded-lg bg-white bg-opacity-10 items-center justify-center flex text-[#96ceb4] text-opacity-30 text-sm hover:bg-opacity-100 hover:text-opacity-100 transition-all duration-500 ease-in-out'
+      onClick={()=>{setVfx(!vfx)}}>
+        VFX
+      </button>
+
       <Canvas className={`w-full h-screen bg-transparent ${rotating ? 'cursor-grabbing' : ''}`}
       camera={{near: 0.1, far: 10000 }}
       shadows
@@ -56,7 +90,7 @@ const Home = () => {
         <Suspense fallback={<Loader/>}>
           <directionalLight 
           position={[-10,13,10]} 
-          intensity={1}
+          intensity={1.5}
           castShadow
           shadow-mapSize-width={1024}
           shadow-mapSize-height={1024}
@@ -71,8 +105,8 @@ const Home = () => {
           groundColor='#000000'
           intensity={1}/>  */}
           <Sky 
-          scale={[0.9, 0.9, 0.9]}
-          position={[0, 0, -500]}
+          scale={skyScale}
+          position={skyPosition}
           rotating={rotating}
           />
           <StorkFly 
@@ -98,8 +132,9 @@ const Home = () => {
           position = {housePosition}
           scale = {houseScale}
           rotation={rotation}
+          getStageFromHouse={getStageFromHouse}
           />
-          <EffectComposer>
+          {vfx && <EffectComposer>
             <DepthOfField
               focusDistance={0} // where to focus
               focalLength={0.012} // focal length
@@ -112,7 +147,7 @@ const Home = () => {
               luminanceSmoothing={0.025} // smoothness of the luminance threshold. Range is [0, 1]
               mipmapBlur={false} // Enables or disables mipmap blur.
             />
-          </EffectComposer>
+          </EffectComposer>}
           
         </Suspense>
       </Canvas>

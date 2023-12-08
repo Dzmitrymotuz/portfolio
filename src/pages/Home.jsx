@@ -1,5 +1,5 @@
 import React, { Suspense, useState } from 'react'
-import { OrbitControls, Plane, Stars, Fisheye, Environment, Lightformer} from '@react-three/drei';
+import { OrbitControls, Plane, Stars, Fisheye, Environment, Lightformer, ContactShadows, Sparkles} from '@react-three/drei';
 import { Canvas } from '@react-three/fiber'
 import { EffectComposer, DepthOfField, Bloom, Noise, Vignette, GodRays} from '@react-three/postprocessing'
 import Loader from '../components/Loader'
@@ -10,6 +10,7 @@ import StorkFly from '../models/srorkFly'
 import Island from '../models/Island'
 import HomeInfo from '../components/HomeInfo';
 
+let colors=['#ff6f69', '#ffcc5c', '#88d8b0']
 
 const Home = () => {
   const [rotating, setRotating] =useState(false)
@@ -70,11 +71,11 @@ const Home = () => {
       <div className='absolute top-28 left-0 right-0 z-10 flex items-center justify-center '>
         {!toggleInfo && <HomeInfo stage={currentStage}></HomeInfo>}
       </div>
-      <button className='absolute bottom-5 z-10 right-2 w-20 h-15 rounded-lg bg-white bg-opacity-10 items-center justify-center flex text-[#96ceb4] text-opacity-30 text-sm hover:bg-opacity-100 hover:text-opacity-100 transition-all duration-500 ease-in-out'
+      <button className={`absolute bottom-5 z-10 right-2 w-20 h-15 rounded-lg ${!toggleInfo ? 'bg-white bg-opacity-10 text-[#96ceb4] text-opacity-60' : 'bg-white bg-opacity-10 text-[#ff6f69] text-opacity-80'}  items-center justify-center flex  text-sm hover:bg-opacity-100 hover:text-opacity-100 transition-all duration-500 ease-in-out`}
       onClick={togglePopups}>
         Toggle popups
       </button>
-      <button className='absolute bottom-20 z-10 right-2 w-20 h-15 rounded-lg bg-white bg-opacity-10 items-center justify-center flex text-[#96ceb4] text-opacity-30 text-sm hover:bg-opacity-100 hover:text-opacity-100 transition-all duration-500 ease-in-out'
+      <button className={`absolute bottom-20 z-10 right-2 w-20 h-15 rounded-lg bg-white bg-opacity-10 items-center justify-center flex ${!vfx ? 'text-[#96ceb4]' : 'text-[#ff6f69]'} text-opacity-60 text-sm hover:bg-opacity-100 hover:text-opacity-100 transition-all duration-500 ease-in-out`}
       onClick={()=>{setVfx(!vfx)}}>
         VFX
       </button>
@@ -82,28 +83,21 @@ const Home = () => {
       <Canvas className={`w-full h-screen bg-transparent ${rotating ? 'cursor-grabbing' : ''}`}
       camera={{near: 0.1, far: 10000 }}
       shadows
-      style={{backgroundColor: "#ffeead"}}
       >
         <Environment preset="sunset"
-        blur={0.1}>
+        blur={0.1}
+        >
         </Environment>
         <Suspense fallback={<Loader/>}>
           <directionalLight 
           position={[-10,13,10]} 
-          intensity={1.5}
+          intensity={0}
           castShadow
           shadow-mapSize-width={1024}
           shadow-mapSize-height={1024}
           shadow-camera-near={0.5}
           shadow-camera-far={500}/>
-          {/* <directionalLight position={[0,10,10]} 
-          intensity={4} 
-          castShadow/> */}
           <ambientLight intensity={1}/>
-          {/* <hemisphereLight
-          skyColor={0xFFA500} 
-          groundColor='#000000'
-          intensity={1}/>  */}
           <Sky 
           scale={skyScale}
           position={skyPosition}
@@ -134,12 +128,12 @@ const Home = () => {
           rotation={rotation}
           getStageFromHouse={getStageFromHouse}
           />
-          {vfx && <EffectComposer>
-            <DepthOfField
+          {!vfx && <EffectComposer>
+            {/* <DepthOfField
               focusDistance={0} // where to focus
               focalLength={0.012} // focal length
-              bokehScale={4} // bokeh size
-            />
+              bokehScale={5} // bokeh size
+            /> */}
             <Bloom
               intensity={0.2} // The bloom intensity.
               blurPass={undefined} // A blur pass.

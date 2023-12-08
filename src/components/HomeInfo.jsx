@@ -17,7 +17,7 @@ const InfoBox = ({text, link, btnText}) => {
 const renderContent = {
     1: (
         <InfoBox 
-        text='Here are my projects'
+        text='I do other stuff, too'
         link='/projects'
         btnText='Check it out!'/>
     ),
@@ -29,9 +29,9 @@ const renderContent = {
     ),
     3: (
         <InfoBox 
-        text='Hi! Got any storks?'
-        link='/about'
-        btnText='What?'/>
+        text='Hello! My name is Dimitry, and welcome to my website!'
+        link='/contact'
+        btnText='Say Hello!'/>
     ),
     4: (
         <InfoBox 

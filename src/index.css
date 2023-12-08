@@ -4,6 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 :root {
   --blue-rgb: 237 245 255;
   --green-rgb: 125 161 35;
@@ -23,7 +25,7 @@ body:has(.card[data-color="green"]:hover) {
 
 @layer utilities {
   .max-container {
-    @apply max-w-5xl mx-auto sm:p-16 pb-12 !pt-[126px] px-8 min-h-[calc(100vh-80px)];
+    @apply max-w-5xl mx-auto sm:p-16 pb-12 !pt-[126px] px-8 min-h-[calc(120vh-80px)];
   }
 
   .head-text {
@@ -34,8 +36,8 @@ body:has(.card[data-color="green"]:hover) {
     @apply font-semibold sm:text-3xl text-xl relative font-poppins;
   }
 
-  .blue-gradient_text {
-    @apply bg-gradient-to-r from-[#ffeead] to-[#ffcc5c] bg-clip-text text-transparent;
+  .red-gradient_text {
+    @apply bg-gradient-to-r from-[#ff6f69] to-[#ffcc5c] bg-clip-text text-transparent;
   }
 
   .input {
@@ -47,7 +49,7 @@ body:has(.card[data-color="green"]:hover) {
   }
 
   .btn {
-    @apply text-white bg-gradient-to-r from-[#00c6ff] to-[#0072ff] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center;
+    @apply text-white bg-gradient-to-r from-[#ffcc5c] to-[#ff6f69] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center;
   }
 
   .header {
@@ -181,4 +183,34 @@ body:has(.card[data-color="green"]:hover) {
   border: #fff;
   box-shadow: 0.6vmin 0.6vmin #fff, 1vmin 1vmin #ffcc5c, 1vmin 1vmin #ffcc5c,
     0.65vmin 1vmin #ffcc5c, 1vmin 0.65vmin #ffcc5c;
+}
+
+.project_layer{
+  width: 50%;
+  height: auto;
+  padding: 20px;
+  margin: 2% 10px 8px 10px;
+  margin-left: 10%;
+  background-color: rgba(136, 216, 176, 0.1);
+  transition: all 0.5s ease;
+  gap: 16px;
+  border-radius: 16px;
+}
+.project_layer.expanded .hidden-pictures {
+  display: block;
+}
+.hidden-pictures {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 20;
+  width: 100%;
+  background-color: #fff;
+  transition: all 0.5 ease;
+}
+.hidden-pictures img {
+  width: 30%;
+  height: auto;
+  display: block;
+  transition: all 0.5 ease;
 }

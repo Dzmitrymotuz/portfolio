@@ -105,14 +105,19 @@ const House = ({setRotating, rotating, getStageFromHouse, ...props}) => {
             // console.log(normalizeRotation)
             if (normalizeRotation > 0.5 && normalizeRotation < 1.2){
               setStage('1')
+              setIdleRotation(0.0006)
             } else if (normalizeRotation > 5.4 && normalizeRotation < 6.0){
               setStage('2')
+              setIdleRotation(0.0006)
             } else if (normalizeRotation > 3.5 && normalizeRotation < 4.2){
               setStage('3')
+              setIdleRotation(0.0006)
             } else if (normalizeRotation > 1.7 && normalizeRotation < 2.4){
               setStage('4')
+              setIdleRotation(0.0006)
             }else{
               setStage(0)
+              setIdleRotation(0.001)
             }
             // console.log(normalizeRotation)
     });
@@ -142,7 +147,6 @@ const House = ({setRotating, rotating, getStageFromHouse, ...props}) => {
         <a.group  ref={butterflyRef} castShadow receiveShadow>
         <primitive position={[3, 3, 4]} scale={[0.3, 0.3, 0.3]} rotation={[0, 0.5, 1]} object={butterflyScene} castShadow receiveShadow/>
         </a.group>
-
         <group position={[0.381, -0.01, 3.797]}>
         <mesh
           castShadow

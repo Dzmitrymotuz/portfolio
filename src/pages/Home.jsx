@@ -71,11 +71,11 @@ const Home = () => {
       <div className='absolute top-28 left-0 right-0 z-10 flex items-center justify-center '>
         {!toggleInfo && <HomeInfo stage={currentStage}></HomeInfo>}
       </div>
-      <button className={`absolute bottom-5 z-10 right-2 w-20 h-15 rounded-lg ${!toggleInfo ? 'bg-white bg-opacity-10 text-[#96ceb4] text-opacity-60' : 'bg-white bg-opacity-10 text-[#ff6f69] text-opacity-80'}  items-center justify-center flex  text-sm hover:bg-opacity-100 hover:text-opacity-100 transition-all duration-500 ease-in-out`}
+      <button className={`absolute bottom-5 z-10 right-2 w-20 h-15 rounded-lg ${!toggleInfo ? 'bg-white bg-opacity-70 text-[#96ceb4] text-opacity-60' : 'bg-white bg-opacity-10 text-[#ff6f69] text-opacity-80'}  items-center justify-center flex  text-sm hover:bg-opacity-100 hover:text-opacity-100 transition-all duration-500 ease-in-out`}
       onClick={togglePopups}>
         Toggle popups
       </button>
-      <button className={`absolute bottom-20 z-10 right-2 w-20 h-15 rounded-lg bg-white bg-opacity-10 items-center justify-center flex ${!vfx ? 'text-[#96ceb4]' : 'text-[#ff6f69]'} text-opacity-60 text-sm hover:bg-opacity-100 hover:text-opacity-100 transition-all duration-500 ease-in-out`}
+      <button className={`absolute bottom-20 z-10 right-2 w-20 h-15 rounded-lg bg-white bg-opacity-70 items-center justify-center flex ${!vfx ? 'text-[#96ceb4]' : 'text-[#ff6f69]'} text-opacity-60 text-sm hover:bg-opacity-100 hover:text-opacity-100 transition-all duration-500 ease-in-out`}
       onClick={()=>{setVfx(!vfx)}}>
         VFX
       </button>

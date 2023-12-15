@@ -55,19 +55,24 @@ const Projects = () => {
         </div>
         {project_files.map((project)=>(
           <div className='project_layer flex flex-col items-top' key={project.title}>
-          <div className='flex flex-row items-top'>
-          <h1 className='head-text text-[#505050] red-gradient_text'>{project.title}</h1>
+            <div className='flex flex-row items-top'>
+            <div className='images'>
+                {project.images.map((image)=>(
+                  <div className='parent_float_container' key={image.name}>
+                    <img className='child_image' src={image.name} alt='img'/>
+                  </div>
+                ))}
+              </div>
+            <h1 className='head-text text-[#505050] red-gradient_text'>{project.title}</h1>
           </div>
-          <div>
+          <div className='font-light sm:text-x1 text-left text-black font-poppins tracking-tight'>
             {project.description}
           </div>
           <div className='flex flex-row items-center justify-end'>
-          <Link to={project.link} target='_blank' rel='noopener noreferrer' className='font-semibold red-gradient_text'>See More</Link>
-          {/* <img src={project.icon} alt='project_icon' className='w-1/4 h-1/4 block mb-[0]' style={{ fill: '#505050' }}/> */}
+          <Link to={project.link} target='_blank' rel='noopener noreferrer' className='font-semibold red-gradient_text' style={{ 'z-index': '12'}}>See More</Link>
         </div>
         </div>
       ))}
-      
             <div className='w-full h-24 p-20'></div>
             <ContactMe/>
       </div>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Currency from './cryptoComponents/Currency'
 import Graphics from './cryptoComponents/Graphics'
-import './indexCrypto.css'
 import CardsFlow from './cryptoComponents/CardsFlow'
 import News from './cryptoComponents/News'
 import CryptoFooter from './cryptoComponents/CryptoFooter'

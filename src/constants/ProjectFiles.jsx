@@ -18,10 +18,10 @@ export const project_files = [
     images: fmpics,
 },
 {
-    title: 'Business Website',
+    title: 'Bugtrag',
     icon: restaurant,
-    description: 'Welcome to our beautiful restaurant website! Experience simplicity and elegance while exploring our menu and vibrant atmosphere. Register now to unlock exclusive offers and make your dining experience even more delightful',
-    link: '/restaurant',
+    description: 'Bug Tracker',
+    link: '/bugtrag',
     images: [],
 },
 {

@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\ProjectsUser;
 use Illuminate\Database\Seeder;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,9 +15,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ProductSeeder::class,
+            ProjectsSeeder::class,
             UserSeeder::class,
+            ProjectsUserSeeder::class,
             UserTicketsSeeder::class,
-            CommentsSeeder::class,
+            CommentsSeeder::class, 
         ]);
         
     }

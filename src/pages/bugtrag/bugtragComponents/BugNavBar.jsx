@@ -6,10 +6,16 @@ import { useAuth } from './context/AuthContext'
 const BugNavBar = () => {
     const {isAuthenticated, logout, user} = useAuth()
   return (
-        <header className='header'>
-            <nav className='bug-nav flex text-sm gap-7 font-medium items-center ml-auto justify-end'>
+        <header className='bug_header absolute'>
+            <nav className='bug-nav flex flex-row justify-between w-[100%] '>
+                <div className='align-start '>
+                    <NavLink to='/bugtrag'>
+                        <img src='/bugtrag_logo.png' className='w-[130px] h-9'/>
+                    </NavLink>
+                </div>
+                <div className='flex text-sm gap-7  font-medium items-center justify-end w-[100%] max-h-[80px] p-[10px]'>
                 {!isAuthenticated ? 
-                <div className='flex flex-row ml-5'>
+                <div className='flex flex-row'>
                 <NavLink to="/bugtrag/login" className={({isActive})=>!isActive ? 'text-[#C6C6C6] mr-5' : 'text-[#EEEEEE] mr-5'} >
                     Login
                 </NavLink>
@@ -21,16 +27,21 @@ const BugNavBar = () => {
                 <NavLink className='' to="/bugtrag/create_ticket">
                 <p className='text-[#a7a7a7]'>Add</p>
                 </NavLink>}
-
                 {isAuthenticated ? 
-                <div className=''>
-                <NavLink className='' to="/bugtrag">
-                <p className='text-[#a7a7a7]'>{user ? user.name : ''}</p>
-                </NavLink>
-                <NavLink to="/bugtrag/login" onClick={logout} className='text-[#a7a7a7] text-xs'>
-                    logout
-                </NavLink> 
+                <div className='flex flex-row items-center justify-end text-[#a7a7a7]'>
+                    <NavLink className='pr-[20px]' to='/bugtrag/projects'>
+                        <p>Projects</p>
+                    </NavLink>
+                    <div className='flex flex-col pt-4'>
+                        <NavLink className='' to="/bugtrag/user">
+                        <p className='text-[#a7a7a7]'>{user ? user.name : ''}</p>
+                        </NavLink>
+                        <NavLink to="/bugtrag/login" onClick={logout} className='text-[#a7a7a7] text-xs'>
+                            logout
+                        </NavLink> 
+                    </div>
                 </div>: ''}
+                </div>
             </nav>
         </header>
   )

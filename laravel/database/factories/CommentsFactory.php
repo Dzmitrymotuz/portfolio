@@ -17,7 +17,7 @@ class CommentsFactory extends Factory
     public function definition(): array
     {
         return [
-            'ticket_id'=>fake()->numberBetween(1,5),
+            'ticket_id'=>fake()->numberBetween(1, 20),
             'user_id'=>fake()->numberBetween(1,5),
             'content'=>fake()->text(),
             'image'=>'Amazon',

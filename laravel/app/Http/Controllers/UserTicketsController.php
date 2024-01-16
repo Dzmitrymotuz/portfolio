@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\UserTickets;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UserTicketsController extends Controller
 {
@@ -12,26 +13,97 @@ class UserTicketsController extends Controller
         $tickets = UserTickets::orderBy('id', 'desc')->paginate($perPage);
         return response()->json(['tickets'=>$tickets]);
     }
+    public function fetch_inprogress_tickets(Request $request) {
+        $perPage = $request->query('perPage', 10);
+        $tickets = UserTickets::where('status', 'In Progress')->paginate($perPage);
+        return response()->json(['tickets'=>$tickets]);
+    }
+    public function fetch_done_tickets(Request $request) {
+        $perPage = $request->query('perPage', 10);
+        $tickets = UserTickets::where('status', 'Done')->paginate($perPage);
+        return response()->json(['tickets'=>$tickets]);
+    }
     public function create_ticket(Request $request) {
+        Log::info('Received Data:', $request->all());
+
         $request -> validate([
             'title' => 'required|string',
             'description' => 'required|string',
             'priority' => 'required|integer',
             'reporter'=> 'required|string',
-            'assign'=> 'required|string'
+            'assign'=> 'required|string',
+            'project_id' => 'integer', 
+            'image' => 'image|mimes:jpeg,png,jpg,gif',
         ]);
-        UserTickets::create([
+        $ticket = new UserTickets([
             'title' => $request->title,
             'description'=> $request->description,
             'priority'=> $request->priority,
             'reporter'=> $request->reporter,
             'assignee'=> $request->assign,
             'status'=> $request->status,
+            'project_id'=>$request->project_id,
         ]);
-        return response()->json('Good', 200);
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' .$image->getClientOriginalExtension();
+            $reactPublicPath = '/Users/dzmitrymotuz/react/DM/public/uploads/';
+            $image->move($reactPublicPath, $imageName);
+            $ticket->attachments = 'public/uploads/'. $imageName;
+        }
+        $ticket->save();
+      
+        return response()->json(['message' => 'Ticket created successfully', 'ticket' => $ticket], 200);
+    }
+    public function edit_ticket(Request $request, $id) {
+        $request -> validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'priority' => 'required|integer',
+            'reporter'=> 'required|string',
+            'assign'=> 'required|string',
+            'project_id' => 'integer', 
+            'image' => 'image|mimes:jpeg,png,jpg,gif',
+        ]);
+        $ticket = UserTickets::find($id);
+        if (!$ticket) {
+            return response()->json(['error' => 'Ticket not found'], 404);
+        }
+        $ticket -> update([
+            'title' => $request->title,
+            'description'=> $request->description,
+            'priority'=> $request->priority,
+            'reporter'=> $request->reporter,
+            'assignee'=> $request->assign,
+            'status'=> $request->status,
+            'project_id'=>$request->project_id,
+        ]);
+      
+        return response()->json(['message' => 'Ticket updated successfully', 'ticket' => $ticket], 200);
     }
     public function fetch_ticket_id ($id) {
-        $ticket = UserTickets::find($id);
+        $ticket = UserTickets::with('comments.user')->find($id);
         return response()->json(['ticket'=>$ticket], 200);
+    }
+    public function delete_ticket ($id) {
+        UserTickets::destroy($id);
+        return response()->json(['Ticket deleted', 200]);
+    }
+    public function change_status (Request $request, $id) {
+        $request->validate ([
+            'status'=>'string',
+        ]
+        );
+        $ticket = UserTickets::find($id);
+        $ticket->update(['status' => $request->status]);
+        return response()->json(['Ticket status updated', 200]);
+    }
+    public function handle_watch (Request $request, $id) {
+        $request->validate ([
+            'watch'=>'integer'
+        ]);
+        $ticket = UserTickets::find($id);
+        $ticket->update(['watch' => $request->watch]);
+        return response()->json(['ticket'=>$ticket]);
     }
 }

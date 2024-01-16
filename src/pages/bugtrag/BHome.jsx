@@ -7,19 +7,27 @@ const BHome = ({ ...props}) => {
   const {user, token} = useAuth()
   const [activetab, setActiveTab] = useState(1)
   const [tickets, setTickets] = useState(null)
-  const [currentPage, setCurrentPage] = useState(1);
-  const [lastPage, setLastPage] = useState(1);
+  const [inProgressTickets, setInProgressTickets] = useState(null)
+  const [doneTickets, setDoneTickets] = useState(null)
 
-  const testData = [ 
-    "Choose the option that best fits your design and user experience preferences. If you dont want the content to overflow at all, use overflow: hidden. If you want to allow scrolling when the content exceeds the container dimensions, use overflow: auto or overflow: scroll.    'skfdbghbdtkjgdrjnfksjbfkbdrjgkdntjkaedwadadwadawdawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw aawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwaadawdrthyjukjyujgjg wda a adwadawdw adfawfwa adad  awdawdawdwadadfawfwa adad  awdawdawdwadaw ghdnt",
-    'skfdbghbdtkjgdrjnfksjbfkbdrjgkdntjkaedwadadwadawdawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw aawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwaadawdrthyjukjyujgjg wda a adwadawdw adfawfwa adad  awdawdawdwadadfawfwa adad  awdawdawdwadaw ghdnt',
-    'skfdbghbdtkjgdrjnfksjbfkbdrjgkdntjkaedwadadwadawdawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw aawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwaadawdrthyjukjyujgjg wda a adwadawdw adfawfwa adad  awdawdawdwadadfawfwa adad  awdawdawdwadaw ghdnt',
-    'skfdbghbdtkjgdrjnfksjbfkbdrjgkdntjkaedwadadwadawdawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw aawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwaadawdrthyjukjyujgjg wda a adwadawdw adfawfwa adad  awdawdawdwadadfawfwa adad  awdawdawdwadaw ghdnt',
-    'skfdbghbdtkjgdrjnfksjbfkbdrjgkdntjkaedwadadwadawdawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw aawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwaadawdrthyjukjyujgjg wda a adwadawdw adfawfwa adad  awdawdawdwadadfawfwa adad  awdawdawdwadaw ghdnt',
-    'skfdbghbdtkjgdrjnfksjbfkbdrjgkdntjkaedwadadwadawdawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw aawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwa wda a adwadawdw adfawfwa adad  awdawdawdwadaawd  dwadawdwaadawdrthyjukjyujgjg wda a adwadawdw adfawfwa adad  awdawdawdwadadfawfwa adad  awdawdawdwadaw ghdnt',
-  ]
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [lastPage, setLastPage] = useState(1);
+  const [inProgressCurrentPage, setInProgressCurrentPage] = useState(1);
+  const [inProgresslastPage, setInProgressLastPage] = useState(1);
+  const [doneCurrentPage, setDoneCurrentPage] = useState(1);
+  const [doneLastPage, setDoneLastPage] = useState(1);
+
+  const [projects, setProjects] = useState()
+
   const handletabClick = (i) => {
     setActiveTab(i);
+    if (activetab === 1) {
+      fetch_inProgresstickets()
+      setCurrentPage(1)
+      setInProgressCurrentPage(1)
+    } else if (activetab === 2){
+      fetch_doneTickets()
+    }
   }
 
   const fetch_tickets = async() => {
@@ -31,22 +39,68 @@ const BHome = ({ ...props}) => {
       console.error('Login error', error)
     }
   }
+  const fetch_inProgresstickets = async() => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag-inprogress?page=${inProgressCurrentPage}`);
+      setInProgressTickets(response.data.tickets.data)
+      setInProgressLastPage(response.data.tickets.last_page)
+    }catch (error) {
+      console.error('Login error', error)
+    }
+  }
+  const fetch_doneTickets = async() => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag-done?page=${doneCurrentPage}`);
+      setDoneTickets(response.data.tickets.data)
+      setDoneLastPage(response.data.tickets.last_page)
+    }catch (error) {
+      console.error('Login error', error)
+    }
+  }
+  const fetch_projects = async() => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/get_all_projects`);
+      setProjects(response.data.projects)
+      console.log(response.data.projects)
+    }catch (error) {
+      console.error('Login error', error)
+    }
+  }
 
  
   useEffect(()=>{
     fetch_tickets();
-  }, [currentPage])
+    fetch_projects();
+    fetch_inProgresstickets();
+    fetch_doneTickets();
+  }, [currentPage, inProgressCurrentPage, doneCurrentPage])
 
   return (
     <div className='bug-main-container flex flex-col'>
       <div className=''>
-          <h1 className=''>BugTrag</h1>
+          <h1 className=''></h1>
       </div>
+{/* Projects */}
       <div className='info-container'>
-        {testData.map((data, i)=>(
-          <div key={i} className='data-container'>{data}</div>
+        {projects && Object.keys(projects).map((key)=>( 
+          <div key={key} className='data-container'>
+            <div className='opacity-40 blur '>
+              <img className='object-contain absolute w-[120%]' src={projects[key].attachments}/>
+            </div>
+            <div className='mb-3 text-lg border-b-2  border-inherit '>
+              <Link to={`/bugtrag/projects/${projects[key].id}`}>{projects[key].name}</Link>
+            </div>
+            <div className='max-h-[200px] overflow-auto'>
+              <div dangerouslySetInnerHTML={{ __html: projects[key].description }}/> 
+            </div>
+            <div className='text-sm align-baseline'>
+              Open issues: <span>{projects[key].user_tickets.length}</span>
+            </div>
+          </div>
         ))}
+        <Link to='/bugtrag/projects/create'>+</Link>
       </div>
+{/* Tickets tabs */}
       <div className='ticket-tablist flex flex-col'>
         <div className='tabs flex m-5'>
           <div className={`tab ${activetab === 1 ? 'active-tab' : ''}`} onClick={()=>handletabClick(1)}>
@@ -59,41 +113,117 @@ const BHome = ({ ...props}) => {
             Done
           </div>
         </div>
-        <div className='tab-content'>
+        <div className='tab-content mx-2'>
           {activetab === 1 && 
           <div className=''>
                 {tickets && tickets.data.map((tick)=>(
                   <Link key={tick.id}  to={`/bugtrag/ticket/${tick.id}`}>
                     <div key={tick.id} className='ticket-container'>
-                    <div className='flex flex-row justify-between items-center ml-1 mr-4 mt-2'>
-                    <p>{tick.id} </p>
-                      <div className='border-b-2 border-gray-500 pb-2'>
-                        {tick.title}
+                    <div className='flex flex-row justify-start items-center ml-1 mr-4 mt-2'>
+                      <div 
+                        className={`p-1 rounded-md ${tick.status === 'Done' ? 'done': tick.status === 'In Progress' ? 'inprogress' : tick.status === 'Released' ? 'released' : tick.status === 'To do' ? 'todo' :''}`}
+                      >                          
+                      {tick.status}
+                        </div>
+                        <div className='flex flex-row'>
+                          <p className='mx-5'>{tick.id} </p>
                       </div>
                     {tick.watch===1 ? <img className='w-5 h-5' src='/eye-on.svg'/> : <img className='w-5 h-5' src='/eye-off.svg'/>}
                     </div>
-                    <div className='m-3 '>
-                      <span>
-                        {tick.description}
-                      </span>
+                    <div className='ml-1 my-3'>
+                        <div className='text-lg'>
+                          {tick.title}
+                        </div>
                     </div>
                     <div className='flex flex-row justify-between items-center'>
                       <span className='m-1'><span className='text-xs'>Reporter:</span> {tick.reporter}</span>
                       <div>
-                        <span className='text-xs'>{new Date(tick.created_at).toLocaleString([], {month:'short', day: 'numeric'})}</span>
+                        <span className='text-xs mr-5'>{new Date(tick.created_at).toLocaleString([], {month:'short', day: 'numeric'})}</span>
                       </div>
                     </div>
                   </div>
                   </Link>
                 ))}
-          </div>}
-          <div className='flex flex-row justify-between mx-10'>
+                <div className='flex flex-row justify-between mx-10'>
             <button onClick={()=>{setCurrentPage(currentPage - 1)}} disabled={currentPage===1} className={`${currentPage===1 ? 'opacity-20' : 'opacity-100'}`}> Prev </button>
             <span>{currentPage}</span>
             <button onClick={()=>{setCurrentPage(currentPage + 1)}} disabled={currentPage===lastPage} className={`${currentPage===lastPage ? 'opacity-20' : 'opacity-100'}`}> Next </button>
-          </div>
-          {activetab === 2 && <div>tiket2</div>}
-          {activetab === 3 && <div>tiket3</div>}
+              </div>
+          </div>}
+          {activetab === 2 && 
+          <div className=''>
+                {inProgressTickets && inProgressTickets.map((tick)=>(
+                  <Link key={tick.id}  to={`/bugtrag/ticket/${tick.id}`}>
+                    <div key={tick.id} className='ticket-container'>
+                    <div className='flex flex-row justify-start items-center ml-1 mr-4 mt-2'>
+                    <div 
+                        className={`p-1 rounded-md ${tick.status === 'Done' ? 'done': tick.status === 'In Progress' ? 'inprogress' : tick.status === 'Released' ? 'released' : tick.status === 'To do' ? 'todo' :''}`}
+                        >
+                          {tick.status}
+                        </div>
+                        <div className='flex flex-row'>
+                          <p className='mx-5'>{tick.id} </p>
+                      </div>
+                    {tick.watch===1 ? <img className='w-5 h-5' src='/eye-on.svg'/> : <img className='w-5 h-5' src='/eye-off.svg'/>}
+                    </div>
+                    <div className='ml-1 my-3'>
+                        <div className='text-lg'>
+                          {tick.title}
+                        </div>
+                    </div>
+                    <div className='flex flex-row justify-between items-center'>
+                      <span className='m-1'><span className='text-xs'>Reporter:</span> {tick.reporter}</span>
+                      <div>
+                        <span className='text-xs mr-5'>{new Date(tick.created_at).toLocaleString([], {month:'short', day: 'numeric'})}</span>
+                      </div>
+                    </div>
+                  </div>
+                  </Link>
+                ))}
+                <div className='flex flex-row justify-between mx-10'>
+            <button onClick={()=>{setInProgressCurrentPage(inProgressCurrentPage - 1)}} disabled={inProgressCurrentPage===1} className={`${inProgressCurrentPage===1 ? 'opacity-20' : 'opacity-100'}`}> Prev </button>
+              <span>{inProgressCurrentPage}</span>
+            <button onClick={()=>{setInProgressCurrentPage(inProgressCurrentPage + 1)}} disabled={inProgressCurrentPage===inProgresslastPage} className={`${inProgressCurrentPage===inProgresslastPage ? 'opacity-20' : 'opacity-100'}`}> Next </button>
+              </div>
+          </div>}
+
+          {activetab === 3 && 
+          <div className=''>
+                {doneTickets && doneTickets.map((tick)=>(
+                  <Link key={tick.id}  to={`/bugtrag/ticket/${tick.id}`}>
+                    <div key={tick.id} className='ticket-container'>
+                    <div className='flex flex-row justify-start items-center ml-1 mr-4 mt-2'>
+                        <div 
+                          className={`p-1 rounded-md ${tick.status === 'Done' ? 'done': tick.status === 'In Progress' ? 'inprogress' : tick.status === 'Released' ? 'released' : tick.status === 'To do' ? 'todo' :''}`}
+                        >
+                          {tick.status}
+                        </div>
+                        <div className='flex flex-row'>
+                          <p className='mx-5'>{tick.id} </p>
+                      </div>
+                    {tick.watch===1 ? <img className='w-5 h-5' src='/eye-on.svg'/> : <img className='w-5 h-5' src='/eye-off.svg'/>}
+                    </div>
+                    <div className='ml-1 my-3'>
+                        <div className='text-lg'>
+                          {tick.title}
+                        </div>
+                    </div>
+                    <div className='flex flex-row justify-between items-center'>
+                      <span className='m-1'><span className='text-xs'>Reporter:</span> {tick.reporter}</span>
+                      <div>
+                        <span className='text-xs mr-5'>{new Date(tick.created_at).toLocaleString([], {month:'short', day: 'numeric'})}</span>
+                      </div>
+                    </div>
+                  </div>
+                  </Link>
+                ))}
+                <div className='flex flex-row justify-between mx-10'>
+            <button onClick={()=>{setInProgressCurrentPage(doneCurrentPage - 1)}} disabled={doneCurrentPage===1} className={`${doneCurrentPage===1 ? 'opacity-20' : 'opacity-100'}`}> Prev </button>
+              <span>{doneCurrentPage}</span>
+            <button onClick={()=>{setInProgressCurrentPage(doneCurrentPage + 1)}} disabled={doneCurrentPage===doneLastPage} className={`${doneCurrentPage===doneLastPage ? 'opacity-20' : 'opacity-100'}`}> Next </button>
+              </div>
+          </div>}
+          
         </div>
           
       </div>

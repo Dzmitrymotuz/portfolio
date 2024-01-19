@@ -380,8 +380,20 @@ body .bug-main-container{
 .info-container{
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
+
+}
+.info-container::-webkit-scrollbar{
+  width: 2px;
+  background-color: var(--bbg);
+}
+.info-container::-webkit-scrollbar-thumb{
+  background-color: var(--bf);
+}
+.info-container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--bt);
+}
+.info-container::-webkit-scrollbar-corner {
+  background-color: transparent; 
 }
 .data-container {
   border: 1px solid var(--bf);
@@ -390,7 +402,6 @@ body .bug-main-container{
   max-height: 310px;
   min-width: none;
   min-height: 310px;
-  overflow: auto;
 }
 .tab {
   cursor: pointer;
@@ -563,9 +574,30 @@ tbody td {
   border-top-left-radius: 10px;
   border-top-right-radius: 5px;
 }
+.drop-down{
+  position: relative;
+  display: inline-block;
+}
+.dropdown-content{
+  display: none;
+  position: absolute;
+  background-color: var(--bf);
+  box-shadow: 0px 8px 16px 0px var(--bg);
+  padding: 5px 10px;
+  z-index: 1;
+}
+.drop-down:hover .dropdown-content{
+  display: block;
+  color: var(--bt);
+  cursor: pointer;
+}
+.drop-down:hover{
+  background-color: var(--bt);
+  color: var(--bbg);
+}
 @layer utilities {
   .info-container{
-    @apply flex flex-row items-start justify-between;
+    @apply flex flex-row items-start justify-start;
   }
   .data-container {
     @apply m-2 p-3;
@@ -573,7 +605,7 @@ tbody td {
   body{
   }
   .bug_header {
-    @apply flex justify-between items-center sm:px-16 py-4 max-w-[100%] absolute top-0 z-10 right-0 left-0;
+    @apply flex justify-between items-center sm:px-20 max-w-[100%] absolute top-0 z-10 right-0 left-0;
   }
 }
   /* --bbg: #303030;

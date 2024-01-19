@@ -37,10 +37,12 @@ Route::get('/bugtrag/assignee', [UserController::class, 'assignee']);
 //Tickets
 Route::post('/bugtrag/create_ticket', [UserTicketsController::class, 'create_ticket']);
 Route::put('/bugtrag/edit-ticket/{id}', [UserTicketsController::class, 'edit_ticket']);
+Route::post('/bugtrag/update-ticket-photo/{id}', [UserTicketsController::class, 'update_ticket_photo']);
 Route::get('/bugtrag/fetch_ticket_id/{id}', [UserTicketsController::class, 'fetch_ticket_id']);
 Route::post('/bugtrag/post_comment', [CommentController::class, 'post_comment']);
 Route::delete('/bugtrag/delete_ticket/{id}', [UserTicketsController::class, 'delete_ticket']);
 Route::put('/bugtrag/change_status/{id}', [UserTicketsController::class, 'change_status']);
+Route::put('/bugtrag/change-project/{id}', [UserTicketsController::class, 'change_project']);
 Route::put('/bugtrag/watching/{id}', [UserTicketsController::class, 'handle_watch']);
 // Bugtrag Projects
 Route::get('/bugtrag/get_all_projects', [ProjectsController::class, 'get_all_projects']);
@@ -48,5 +50,9 @@ Route::post('/bugtrag/projects/create', [ProjectsController::class, 'create_proj
 Route::get('/bugtrag/fetch_project/{id}', [ProjectsController::class, 'fetch_project']);
 Route::get('/bugtrag/fetch_project_users/{id}', [ProjectsController::class, 'fetch_project_users']);
 Route::put('/bugtrag/edit-project/{id}', [ProjectsController::class, 'edit_project']);
+Route::post('/bugtrag/delete-project/{id}', [ProjectsController::class, 'delete_project']);
+Route::post('/bugtrag/update-project-photo/{id}', [ProjectsController::class, 'update_project_photo']);
+// Components
+Route::get('/bugtrag/tickets_search', [UserTicketsController::class, 'search_ticket']);
 
 

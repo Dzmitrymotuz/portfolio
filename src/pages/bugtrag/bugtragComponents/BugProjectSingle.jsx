@@ -13,6 +13,7 @@ const BugProjectSingle = () => {
     const [users, setUsers] = useState([])
     const [imageSrc, setImageSrc] = useState()
     const [image, setImage] = useState()
+    const navigate = useNavigate()
 
     const fetch_project = async() => {
         try {
@@ -32,35 +33,48 @@ const BugProjectSingle = () => {
             console.error(e.response.data.message)
         }
     }
-    const handleImage = (e) => {
-      const selectedImage = e.target.files[0];
+    const delete_project = async(e) => {
       e.preventDefault()
+      try{
+        const response = await axios.post(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/delete-project/${params.id}`)
+        if (response.status === 200) {
+          navigate('/bugtrag')
+        }
+      }catch(e){
+        console.error(e)
+    }
+    }
+    const handleImage = (e) => {
+      e.preventDefault()
+      const selectedImage = e.target.files[0];
       setImage(e.target.files[0])
-      setImageSrc(e.target.files[0])
       const reader = new FileReader()
       reader.onloadend = () => {
-        setImageSrc(reader.result)
+        setImageSrc(reader.result) 
       }
-      if (selectedImage) {
-        reader.readAsDataURL(selectedImage);
+      reader.readAsDataURL(selectedImage);
     }
-    }
-
-    const handleEdit = async(e) => {
+    const updateImage = async(e) => {
       e.preventDefault()
-      //test
       const formData = new FormData()
-      formData.append('name', project.name)
-      formData.append('description', project.description)
-      console.log(formData)
-      // if (image) {
-      //   formData.append('attachments', image)
-      // }
+      formData.append('attachments', image)
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/update-project-photo/${project.id}`, formData)
+        console.log(response.data)
+      }catch(e){
+        console.error(e)
+    }
+  } 
+    const handleEdit = async(e) => {
+      updateImage(e)
+      // e.preventDefault()
+      console.log(image)
         try { 
             const response = await axios.put(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/edit-project/${project.id}`, {
               name: project.name,
               description: project.description,
             })
+            console.log(response.data)
         }catch(e){
             console.error(e.response.data.message)
         }   
@@ -73,9 +87,10 @@ const BugProjectSingle = () => {
     },[])
   return (
     <div className='bug-main-container '>
-        <div className='project-container mt-10 rounded-md m-10 py-10 flex items-center justify-center shadow-sm shadow-slate-100 bg-[#464646]'> 
+        <div className='project-container mt-10 rounded-md m-10 py-10 flex items-center justify-start shadow-sm shadow-slate-100 bg-[#464646] w-[95%]'> 
         {project &&
         <div className='flex flex-col'>
+{/* ICONS */}
           <div className='flex flex-row justify-end mt-[-3%] mr-[5%]'>
             {isEdited ? 
               <div className='mr-2' onClick={(e)=>handleEdit(e)}>
@@ -88,7 +103,7 @@ const BugProjectSingle = () => {
               <div className='mr-2' onClick={()=>setIsEdited(!isEdited)}>
                   <img src='/edit.svg' alt='edit' className='w-4 delete_icon'/> 
               </div> 
-              <div onClick={()=>delete_ticket()}>
+              <div onClick={(e)=>delete_project(e)}>
                   <img src='/del.svg' alt='delete' className='w-4 delete_icon'/>
               </div>
             </div>
@@ -96,8 +111,8 @@ const BugProjectSingle = () => {
         <div className='flex flex-row mx-[5%]'>
 {/* IMAGE */}
             {isEdited ? 
-            <div>
-              <label htmlFor="imageInput" className='bug-btn '>Attach Image</label>
+            <div className='flex flex-col items-center justify-top '>
+              <label htmlFor="imageInput" className='bug-btn '>Attach New Image</label>
               <input
                     type="file"
                     id="imageInput"
@@ -106,16 +121,17 @@ const BugProjectSingle = () => {
                     onChange={(e) => handleImage(e)}
                 />
               {image && (
-                    <div>
-                       {console.log(image)}
-                        <p>Preview:</p>
-                        <img src={imageSrc} alt='preview' className='w-[400px] h-auto'/>
+                <div className='max-w-[20rem] max-h-[20m] mx-5 p-5 '>
+                    <div className=''>
+                        <p className='text-sm'>Preview:</p>
+                        <img src={imageSrc} alt='preview' className='w-[200px] h-auto'/>
                     </div>
+                  </div>
                 )}
             </div>
             :
-            <div  className='w-[15rem] mx-10 py-5'>
-                {project.attachments && <img src={project.attachments} alt="Attachment"/>}
+            <div  className='flex justify-center items-start w-[20em] h-auto mx-10 py-5'>
+                {project.attachments && <img src={project.attachments} alt="Attachment" className='object-contain'/>}
             </div>}
 {/* NAME */}
             <div className='w-[30rem] flex flex-col'>
@@ -143,7 +159,7 @@ const BugProjectSingle = () => {
                   </div>
 {/* DESCRIPTION */}
                 {isEdited ? 
-                <div className='text-lg min-w-[15em] grid grid-cols-1'>
+                <div className='text-lg pb-10 mb-10 min-w-[15em] grid grid-cols-1'>
                   <ReactQuill 
                         theme='snow'
                         value={project.description}
@@ -157,16 +173,19 @@ const BugProjectSingle = () => {
                   dangerouslySetInnerHTML={{ __html: project.description}}>
                 </div>}
                   <div className='flex flex-row justify-between text-sm' >
-                    <div className='pb-20'>
+                    <div className=''>
                         Releases: {project.releases}
                     </div>
                     <div className=''>
                       Created: {new Date(project.created_at).toLocaleDateString()}
                     </div>
                 </div>
+                {isEdited ?
                 <div>                   
                    <button className='bug-btn w-[100%]' onClick={handleEdit}>Save Changes</button>
                 </div>
+                :
+                ''}
             </div>
         </div>
         </div>

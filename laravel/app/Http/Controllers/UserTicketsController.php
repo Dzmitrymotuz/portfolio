@@ -55,6 +55,18 @@ class UserTicketsController extends Controller
       
         return response()->json(['message' => 'Ticket created successfully', 'ticket' => $ticket], 200);
     }
+    public function update_ticket_photo(Request $request, $id) {
+        $request->validate([
+            'attachments'=>'image',
+        ]);
+        $ticket = UserTickets::find($id);
+        $image = $request->file('attachments');
+        $imageName = time().'.'.$image->getClientOriginalExtension();
+        $reactPublicPath = '/Users/dzmitrymotuz/react/DM/public/uploads/';
+        $image->move($reactPublicPath, $imageName);
+        $ticket->update(['attachments'=>'/public/uploads/'.$imageName]);
+        return response()->json(['image updated bro'], 200);
+    }
     public function edit_ticket(Request $request, $id) {
         $request -> validate([
             'title' => 'required|string',
@@ -82,7 +94,7 @@ class UserTicketsController extends Controller
         return response()->json(['message' => 'Ticket updated successfully', 'ticket' => $ticket], 200);
     }
     public function fetch_ticket_id ($id) {
-        $ticket = UserTickets::with('comments.user')->find($id);
+        $ticket = UserTickets::with('comments.user', 'projects')->find($id);
         return response()->json(['ticket'=>$ticket], 200);
     }
     public function delete_ticket ($id) {
@@ -98,6 +110,15 @@ class UserTicketsController extends Controller
         $ticket->update(['status' => $request->status]);
         return response()->json(['Ticket status updated', 200]);
     }
+    public function change_project (Request $request, $id) {
+        $request->validate ([
+            'project_id'=>'integer',
+        ]
+        );
+        $ticket = UserTickets::find($id);
+        $ticket->update(['project_id' => $request->project_id]);
+        return response()->json(['Project status updated', 200]);
+    }
     public function handle_watch (Request $request, $id) {
         $request->validate ([
             'watch'=>'integer'
@@ -106,4 +127,10 @@ class UserTicketsController extends Controller
         $ticket->update(['watch' => $request->watch]);
         return response()->json(['ticket'=>$ticket]);
     }
+    public function search_ticket(Request $request) {
+        $query = $request->query('query');
+        $tickets = UserTickets::where('title', 'like', "%$query%")->paginate(10);
+        return response()->json(['tickets'=>$tickets], 200);
+    }
 }
+       

@@ -20,6 +20,10 @@ class ProjectsController extends Controller
         $users = $project->users;
         return response()->json(['project'=>$project, 'users'=>$users]);
     }
+    public function delete_project($id) {
+        Projects::destroy($id);
+        return response()->json(['Project deleted'], 200);
+    }
     public function create_project(Request $request) {
 
         $request -> validate([
@@ -54,7 +58,6 @@ class ProjectsController extends Controller
         $request -> validate([
             'name' => 'string',
             'description' => 'string',
-            'attachments' => 'image|mimes:jpeg,png,jpg,gif|nullable'
         ]);
         $project = Projects::find($id);
         if (!$project) {
@@ -63,9 +66,28 @@ class ProjectsController extends Controller
         $project -> update([
             'name' => $request->name,
             'description' => $request->description,
-            'attachments' => $request->attachments,
         ]);
+        if ($request->hasFile('attachments')) {
+            $image = $request->file('attachments');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $reactPublicPath = '/Users/dzmitrymotuz/react/DM/public/uploads/';
+            $image->storeAs($reactPublicPath, $imageName);
+            $project->attachments = '/public/uploads/'. $imageName;
+        };
       
         return response()->json(['message' => 'Project updated successfully', 'project' => $project], 200);
+    }
+    public function update_project_photo (Request $request, $id) {
+        $request->validate([
+            'attachments' => 'image|mimes:jpeg,png,jpg,gif|',
+        ]);
+        $project = Projects::find($id);
+        if ($request->hasFile('attachments')) {
+            $image = $request->file('attachments');
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $image->move('/Users/dzmitrymotuz/react/DM/public/uploads/', $imageName);
+            $project->update(['attachments' => '/public/uploads/'. $imageName]);
+        }
+        return response()->json(['message'=>'Image Updated'], 200);
     }
 }

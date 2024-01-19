@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from './bugtragComponents/context/AuthContext'
 import axios from 'axios'
+import Search from './bugtragComponents/Utilities/Search'
+
 
 const BHome = ({ ...props}) => {
   const {user, token} = useAuth()
@@ -34,6 +36,7 @@ const BHome = ({ ...props}) => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag?page=${currentPage}`);
       setTickets(response.data.tickets)
+      // console.log(response.data.tickets)
       setLastPage(response.data.tickets.last_page)
     }catch (error) {
       console.error('Login error', error)
@@ -61,13 +64,25 @@ const BHome = ({ ...props}) => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/get_all_projects`);
       setProjects(response.data.projects)
-      console.log(response.data.projects)
+      // console.log(response.data.projects)
     }catch (error) {
       console.error('Login error', error)
     }
-  }
+  } 
+  const onSearchResults = (searchResults) => {
+    setTickets(searchResults)
+    setLastPage(searchResults.last_page)
+    
+    console.log(searchResults.data)
+    console.log(Object.keys(searchResults.data).map((id) => {
+      return searchResults.data[id].status.filter(item=>item==='To Do')
+    }))
+    setDoneTickets(searchResults.data)
+    setDoneLastPage(searchResults.last_page)
 
- 
+    setInProgressTickets(searchResults.data)
+    setInProgressLastPage(searchResults.last_page)
+  }
   useEffect(()=>{
     fetch_tickets();
     fetch_projects();
@@ -81,14 +96,15 @@ const BHome = ({ ...props}) => {
           <h1 className=''></h1>
       </div>
 {/* Projects */}
-      <div className='info-container'>
-        {projects && Object.keys(projects).map((key)=>( 
-          <div key={key} className='data-container'>
+      <div className='info-container  overflow-scroll justify-start items-start'>
+        {projects && Object.keys(projects).map((key, index)=>( 
+          <div key={key} className={`data-container min-w-[13em] max-w-[13em] ${index > -1 ? '' : 'ml-0'}`}>
+            <Link to={`/bugtrag/projects/${projects[key].id}`}>
             <div className='opacity-40 blur '>
-              <img className='object-contain absolute w-[120%]' src={projects[key].attachments}/>
+              <img className='object-cover absolute opacity-30 ' src={projects[key].attachments}/>
             </div>
             <div className='mb-3 text-lg border-b-2  border-inherit '>
-              <Link to={`/bugtrag/projects/${projects[key].id}`}>{projects[key].name}</Link>
+              {projects[key].name}
             </div>
             <div className='max-h-[200px] overflow-auto'>
               <div dangerouslySetInnerHTML={{ __html: projects[key].description }}/> 
@@ -96,21 +112,29 @@ const BHome = ({ ...props}) => {
             <div className='text-sm align-baseline'>
               Open issues: <span>{projects[key].user_tickets.length}</span>
             </div>
+            </Link>
           </div>
         ))}
+      </div>
+      <div className='flex flex-row justify-center text-xl' alt='create new project'>
         <Link to='/bugtrag/projects/create'>+</Link>
       </div>
 {/* Tickets tabs */}
       <div className='ticket-tablist flex flex-col'>
-        <div className='tabs flex m-5'>
-          <div className={`tab ${activetab === 1 ? 'active-tab' : ''}`} onClick={()=>handletabClick(1)}>
-            Worked on
+        <div className='flex flex-row justify-between'> 
+          <div className='tabs flex m-5'>
+            <div className={`tab ${activetab === 1 ? 'active-tab' : ''}`} onClick={()=>handletabClick(1)}>
+              Worked on
+            </div>
+            <div className={`tab ${activetab === 2 ? 'active-tab' : ''}`} onClick={()=>handletabClick(2)}>
+              In Progress
+            </div>
+            <div className={`tab ${activetab === 3 ? 'active-tab' : ''}`} onClick={()=>handletabClick(3)}>
+              Done
+            </div>
           </div>
-          <div className={`tab ${activetab === 2 ? 'active-tab' : ''}`} onClick={()=>handletabClick(2)}>
-            In Progress
-          </div>
-          <div className={`tab ${activetab === 3 ? 'active-tab' : ''}`} onClick={()=>handletabClick(3)}>
-            Done
+          <div className='mr-[5%] flex items-center'>
+              <Search onSearchResults={onSearchResults}/>
           </div>
         </div>
         <div className='tab-content mx-2'>

@@ -39,7 +39,7 @@ const CreateTicket = () => {
     }
     const send_data = async(e) => {
         e.preventDefault()
-        console.log(image)
+        // console.log(image)
         const payload = new FormData();
             payload.append('title', sumRef.current.value),
             payload.append('description', description);

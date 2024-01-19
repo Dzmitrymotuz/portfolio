@@ -13,24 +13,31 @@ const Ticket = () => {
     const [created, setCreated] = useState()
     const [updated, setUpdated] = useState()
     const [ticketStatus, setTicketStatus] = useState()
+    const [projectValue, setProjectValue] = useState()
     const [isEdited, setIsEdited] = useState(false)
-    const [watch, setWatch] = useState()
+    const [watch, setWatch] = useState()    
+    const [image, setImage] = useState(null)
+    const [projects, setProjects] = useState()
+
     const navigate = useNavigate()
     const commentRef = useRef()
     const statusRef = useRef()
-    const watchRef = useRef()
+    const projectRef = useRef()
+    
+
 
     const fetch_ticket = async() => {
         try {
             const response  = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/fetch_ticket_id/${params.id}`)
             setTicket(response.data.ticket)
-            // console.log(response.data.ticket)
+            console.log(response.data.ticket.projects.name)
             const created_at = new Date(response.data.ticket.created_at).toLocaleString()
             const updated_at = new Date(response.data.ticket.updated_at).toLocaleString()
             setCreated(created_at)
             setUpdated(updated_at)
             setTicketStatus(response.data.ticket.status)
             setWatch(response.data.ticket.watch)
+            setProjectValue(response.data.ticket.projects.id)
         }catch(e){
             console.error(e.response.data.message)
         }
@@ -77,6 +84,17 @@ const Ticket = () => {
             console.error(e.response.data.message)
         }
     }
+    const change_project = async(e) => {
+        setProjectValue(projectRef.current.value)
+        const payload = {
+           project_id: projectRef.current.value,
+        }
+        try {
+            const response = await axios.put(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/change-project/${ticket.id}`, payload)
+        }catch(e){
+            console.error(e.response.data.message)
+        }
+    }
     const handleWatch = async(e) => {
         setWatch((prevWatch => prevWatch === 0 ? 1 : 0))
         const payload = {
@@ -89,9 +107,26 @@ const Ticket = () => {
             console.error(e.response.data.message)
         }
     }
+    const handleImage = async(e) => {
+        const uploadedImage = e.target.files[0]
+        const reader = new FileReader()
+        reader.onloadend = () => {
+            setImage(reader.result)
+        }
+        reader.readAsDataURL(uploadedImage)
+
+        const formData = new FormData()
+        formData.append('attachments', uploadedImage)
+        try{
+            const response = await axios.post(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/update-ticket-photo/${ticket.id}`, formData)
+            console.log(response.data)
+        }catch(e){
+            console.error(e.response.data.message)
+        } 
+    } 
     const handleEdit = async(e) => {
         e.preventDefault()
-        try {
+        try { 
             const response = await axios.put(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/edit-ticket/${ticket.id}`, {
             title : ticket.title,
             description : ticket.description,
@@ -106,9 +141,19 @@ const Ticket = () => {
         }   
         setIsEdited(!isEdited)
     }
+    const fetch_projects= async() => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/get_all_projects`);
+            setProjects(response.data.projects)
+            // console.log(response.data.projects)
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     useEffect(()=>{
         fetch_ticket()
+        fetch_projects()
     },[])
 
   return (
@@ -119,13 +164,15 @@ const Ticket = () => {
             <div className='w-[80%] mt-10 ml-[10%] '>
                 <div className='flex flex-row justify-between'>
                     <div className='flex flex-row'>
-                    <div className='mx-2 my-2 w-5 h-5' onClick={handleWatch}>
+                    <div className='mx-2 my-2 w-5 h-5 hover:cursor-pointer' onClick={handleWatch}>
                         {watch === 1 ? <img alt='watch' value='1' src='/eye-on.svg'/> : <img value='0' src='/eye-off.svg'/>}
                     </div>
                     <div>
-                    <select onChange={change_status} 
+                    <select 
+                    onChange={change_status} 
                     className={`select-status bg-[#919191] ${ticketStatus === 'Done' ? 'done': ticketStatus === 'In Progress' ? 'inprogress' : ticketStatus === 'Released' ? 'released' : ticketStatus === 'To do' ? 'todo' :''}`}
-                    value={ticketStatus} ref={statusRef}>
+                    value={ticketStatus} 
+                    ref={statusRef}>
                             <option value='To do'>To do</option>
                             <option value='Done'>Done</option>
                             <option value='In Progress'>In Progress</option>
@@ -133,7 +180,21 @@ const Ticket = () => {
                     </select>
                     </div>
                     </div>
-                    <div className='flex flex-row'> 
+                    <div className='flex flex-row '> 
+{/* DROP-DOWN PROJECTS */}
+                    <div className='flex flex-row text-sm mx-10 justify-center '>
+                        <label>Project: </label>
+                        {projectValue && <select  
+                            className={`select-status bg-[#515151] `}
+                            onChange={change_project}
+                            value={projectValue}
+                            ref={projectRef}
+                            >
+                                {projects && projects.map((project, index)=>(
+                                    <option key={index} value={project.id} >{project.name}</option>
+                                ))}
+                        </select>}
+                    </div>
                         <label className='text-xs mr-40'>Assignee: {ticket.assignee}</label>
                         {isEdited ? 
                         <div className='mr-2' onClick={(e)=>handleEdit(e)}>
@@ -162,24 +223,38 @@ const Ticket = () => {
                     :
                     <strong>{ticket.title}</strong>}
                 </div>
+{/* Description & Image */}
                 <div className='mt-5 mb-5 '>
                     {isEdited ? 
-                    <div>
+                    <div className='flex flex-col'>
                     <ReactQuill 
                         theme='snow'
                         value={ticket.description}
                         onChange={(value)=>setTicket({...ticket, description: (value)})}
                         placeholder='Project Description'
-                        className='w-[100%] mt-5 max-h-[50vh]'
+                        className='w-[100%] mt-0 h-[50vh] max-h-[50vh]'
                     />
-                    <button className='bug-btn w-[100%] mb-5' onClick={handleEdit}>Save Changes</button>
+                    <div className='my-0  pt-12'>
+                        <input 
+                        type='file'
+                        id='imageInput'
+                        className='bug-btn w-[100%]'
+                        onChange={(e)=>handleImage(e)}
+                         />
+                        {!image ? <img src={ticket.attachments} alt="Attachment"/> : <img src={image} alt='preview'/>}
+                    
+                        <button className='bug-btn w-[100%] mb-0' onClick={handleEdit}>Save Changes</button>
+                        </div>
                     </div>
                     :
-                    <div dangerouslySetInnerHTML={{ __html: ticket.description }}/> 
-                }
                     <div>
-                        {ticket.attachments && <img src={ticket.attachments} alt="Attachment"/>}
-                    </div>
+                        <div dangerouslySetInnerHTML={{ __html: ticket.description }}/>
+                        <div>
+                            {ticket.attachments && <img src={ticket.attachments} alt="Attachment"/>}
+                        </div>
+                    </div> 
+                    }
+                    
                     <div className='flex flex-row justify-between mb-10 mt-5'>
                         <div>
                             <label className='text-xs'>Created: </label>
@@ -193,6 +268,7 @@ const Ticket = () => {
                 </div>
             </div>}
             <div>
+{/* comments section */}
             <div>
                 <div className='comment-sender w-[60%] ml-[20%]'>
                     <form onSubmit={(e)=>send_comment(e)}>
@@ -203,7 +279,7 @@ const Ticket = () => {
                     </form>
                 </div>
             </div>
-{/* comments section */}
+        <div className='bg-[#303030] h-[50vh]'>
             <div className='ml-[10%] comment-section'>
                 <span >Activity: </span>
             {ticket&& Object.keys(ticket.comments).map((key)=>(
@@ -226,6 +302,7 @@ const Ticket = () => {
             ))}    
             </div>
         </div>
+    </div>
     </div>
     </>
   )

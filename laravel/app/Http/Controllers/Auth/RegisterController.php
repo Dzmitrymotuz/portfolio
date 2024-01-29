@@ -24,6 +24,7 @@ class RegisterController extends Controller
         $user = Auth::user();
         if ($user) {
             $token = $user->createToken('main')->plainTextToken;
+            $cookie = cookie('jwt', $token, 60*24);
             return response()->json(['message' => 'login succesfull', 'token'=>$token, 'user'=>$user]);
         }
         return response(['message' => 'User not found']);

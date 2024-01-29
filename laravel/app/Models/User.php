@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Projects;
+use App\Models\UserTickets;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -17,7 +18,10 @@ class User extends Authenticatable
         return $this->hasMany(Comments::class, 'user_id');
     }
     public function projects() {
-        return $this->belongsToMany(Projects::class, 'projects_users');
+        return $this->belongsToMany(Projects::class, 'projects_users', 'user_id', 'project_id');
+    }
+    public function userTickets() {
+        return $this->hasMany(UserTickets::class, 'reporter', 'name');
     }
 
     /**

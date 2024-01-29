@@ -13,6 +13,6 @@ class UserTicketsSeeder extends Seeder
      */
     public function run(): void
     {
-        UserTickets::factory(20)->create();
+        UserTickets::factory(40)->create();
     }
 }

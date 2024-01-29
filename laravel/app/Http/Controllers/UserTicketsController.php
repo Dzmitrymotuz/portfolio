@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\UserTickets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -12,6 +13,12 @@ class UserTicketsController extends Controller
         $perPage = $request->query('perPage', 10);
         $tickets = UserTickets::orderBy('id', 'desc')->paginate($perPage);
         return response()->json(['tickets'=>$tickets]);
+    }
+    public function fetch_user_tickets(Request $request) {
+        $id = $request->query('id');
+        $user = User::find($id);
+        $tickets = $user->userTickets()->orderBy('reporter')->paginate(); 
+        return response()->json(['tickets'=>$tickets, 'user'=>$user]);
     }
     public function fetch_inprogress_tickets(Request $request) {
         $perPage = $request->query('perPage', 10);
@@ -112,11 +119,11 @@ class UserTicketsController extends Controller
     }
     public function change_project (Request $request, $id) {
         $request->validate ([
-            'project_id'=>'integer',
+            'project_id'=>'integer|nullable',
         ]
         );
         $ticket = UserTickets::find($id);
-        $ticket->update(['project_id' => $request->project_id]);
+        $ticket->update(['project_id' => $request->project_id ?? null]);
         return response()->json(['Project status updated', 200]);
     }
     public function handle_watch (Request $request, $id) {
@@ -129,7 +136,7 @@ class UserTicketsController extends Controller
     }
     public function search_ticket(Request $request) {
         $query = $request->query('query');
-        $tickets = UserTickets::where('title', 'like', "%$query%")->paginate(10);
+        $tickets = UserTickets::where('title', 'like', "%$query%")->paginate(10000);
         return response()->json(['tickets'=>$tickets], 200);
     }
 }

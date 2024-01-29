@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Projects;
+use App\Models\UserTickets;
 use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
@@ -11,16 +13,27 @@ class ProjectsController extends Controller
         $projects = Projects::with('user_tickets')->get();
         return response()->json(['projects'=>$projects]);
     }
+    public function get_all_user_projects(Request $request) {
+        $id = $request->query('id');
+        $user = User::find($id);
+        $connectedProjects = $user->projects;
+        return response()->json(['projects'=>$connectedProjects]);
+    }
     public function fetch_project($id) {
         $project = Projects::with('user_tickets')->find($id);
         return response()->json(['project'=>$project]);
     }
     public function fetch_project_users($id) {
         $project = Projects::find($id);
-        $users = $project->users;
-        return response()->json(['project'=>$project, 'users'=>$users]);
+        $allUsers = User::all();
+        $connectedUsers = $project->users;
+        $notConnectedUsers = $allUsers->diff($connectedUsers);
+        return response()->json(['project'=>$project, 'connectedUsers'=>$connectedUsers, 'notConnectedUsers'=>$notConnectedUsers]);
     }
     public function delete_project($id) {
+        $project = Projects::find($id);
+        UserTickets::where('project_id', $id)->update(['project_id'=>null]);
+        $project->users()->detach();
         Projects::destroy($id);
         return response()->json(['Project deleted'], 200);
     }
@@ -89,5 +102,14 @@ class ProjectsController extends Controller
             $project->update(['attachments' => '/public/uploads/'. $imageName]);
         }
         return response()->json(['message'=>'Image Updated'], 200);
+    }
+    public function dismiss_user_from_project(Request $request) {
+        $request -> validate([
+            'user_id' => 'integer',
+            'project_id' => 'integer',
+        ]);
+        $project = Projects::find($request->input('project_id'));
+        $project->users()->detach($request->input('user_id'));
+        return response()->json(['message'=>'User Dismissed'], 200);
     }
 }

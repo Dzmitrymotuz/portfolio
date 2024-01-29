@@ -17,6 +17,9 @@ class UserTickets extends Model
     public function projects() {
         return $this->belongsTo(Projects::class, 'project_id');
     }
+    public function users() {
+        return $this->belongsTo(User::class, 'name');
+    }
 
     // protected $guarded = [];
 

@@ -20,7 +20,7 @@ class UserTicketsFactory extends Factory
     {
         return [
             'title' => fake()->name(),
-            'project_id' => fake()->randomElement([1,2]),
+            'project_id' => null,
             'description' => fake()->text(),
             'status' => 'To Do',
             'priority' => fake()->randomElement([1,2,3]),

@@ -20,4 +20,13 @@ class UserController extends Controller
         $assignees = User::where('role', 'user')->get();
         return response()->json($assignees);
     }
+    public function change_password (Request $request, $id) {
+        $request->validate([
+            'old_password'=>'string',
+            'new_password'=>'string',
+        ]);
+        $user = Auth::user();
+        $user->update(['password' => bcrypt($request->new_password)]);
+        return response()->json(['message'=>'password updated', 'user'=>$user->name], 200);
+    }
 }

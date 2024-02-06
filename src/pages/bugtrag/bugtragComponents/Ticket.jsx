@@ -13,7 +13,7 @@ const Ticket = () => {
     const [created, setCreated] = useState()
     const [updated, setUpdated] = useState()
     const [ticketStatus, setTicketStatus] = useState()
-    const [projectValue, setProjectValue] = useState()
+    const [projectValue, setProjectValue] = useState('0')
     const [isEdited, setIsEdited] = useState(false)
     const [watch, setWatch] = useState()    
     const [image, setImage] = useState(null)
@@ -30,16 +30,16 @@ const Ticket = () => {
         try {
             const response  = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/fetch_ticket_id/${params.id}`)
             setTicket(response.data.ticket)
-            console.log(response.data.ticket.projects.name)
             const created_at = new Date(response.data.ticket.created_at).toLocaleString()
             const updated_at = new Date(response.data.ticket.updated_at).toLocaleString()
             setCreated(created_at)
             setUpdated(updated_at)
             setTicketStatus(response.data.ticket.status)
             setWatch(response.data.ticket.watch)
+            // console.log(response.data.ticket)
             setProjectValue(response.data.ticket.projects.id)
         }catch(e){
-            console.error(e.response.data.message)
+            console.error(e)
         }
     }
     const send_comment = async(e) => {
@@ -87,7 +87,7 @@ const Ticket = () => {
     const change_project = async(e) => {
         setProjectValue(projectRef.current.value)
         const payload = {
-           project_id: projectRef.current.value,
+           project_id: projectRef.current.value ? parseInt(projectRef.current.value) : null,
         }
         try {
             const response = await axios.put(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/change-project/${ticket.id}`, payload)
@@ -190,6 +190,7 @@ const Ticket = () => {
                             value={projectValue}
                             ref={projectRef}
                             >
+                                <option value={null}>Unassigned</option>
                                 {projects && projects.map((project, index)=>(
                                     <option key={index} value={project.id} >{project.name}</option>
                                 ))}

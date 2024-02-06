@@ -11,8 +11,19 @@ const BugProjectSingle = () => {
     const [tickets, setTickets] = useState()
     const [isEdited, setIsEdited] = useState(false)
     const [users, setUsers] = useState([])
+    const [notConnectedUsers, setNotConnectedUsers] = useState()
     const [imageSrc, setImageSrc] = useState()
     const [image, setImage] = useState()
+    const [selectedIds, setSelectedIds] = useState([])
+
+    const handleUserClick = (userId) => {
+      setSelectedIds((prevSelectedIds) =>
+        prevSelectedIds.includes(userId)
+          ? prevSelectedIds.filter((id) => id !== userId)
+          : [...prevSelectedIds, userId]
+      );
+    };
+
     const navigate = useNavigate()
 
     const fetch_project = async() => {
@@ -28,7 +39,8 @@ const BugProjectSingle = () => {
     const fetch_project_users = async() => {
         try {
             const response  = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/fetch_project_users/${params.id}`)
-            setUsers(response.data.users)
+            setUsers(response.data.connectedUsers)
+            setNotConnectedUsers(response.data.notConnectedUsers)
         }catch(e){
             console.error(e.response.data.message)
         }
@@ -41,7 +53,7 @@ const BugProjectSingle = () => {
           navigate('/bugtrag')
         }
       }catch(e){
-        console.error(e)
+        console.error(e.response.data.message)
     }
     }
     const handleImage = (e) => {
@@ -68,7 +80,6 @@ const BugProjectSingle = () => {
     const handleEdit = async(e) => {
       updateImage(e)
       // e.preventDefault()
-      console.log(image)
         try { 
             const response = await axios.put(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/edit-project/${project.id}`, {
               name: project.name,
@@ -79,6 +90,31 @@ const BugProjectSingle = () => {
             console.error(e.response.data.message)
         }   
         setIsEdited(!isEdited)
+    }
+    const send_users = async() => {
+      const payload = {
+        users: selectedIds,
+        project_id: project.id
+      }
+      try { 
+        const response = await axios.post(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/add_users_to_projects`, payload)
+        fetch_project_users()
+      }catch(e){
+          console.error(e.response.data.message, payload)
+      }   
+    }
+    const dismiss_user = async(id) => {
+      const payload = {
+        user_id: id,
+        project_id: project.id
+      }
+      try { 
+        const response = await axios.put(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/dismiss_user_from_project`, payload)
+        fetch_project_users()
+        console.log(response.data.message)
+      }catch(e){
+          console.error(e.response.data.message, payload)
+      }   
     }
 
     useEffect(()=>{
@@ -124,7 +160,8 @@ const BugProjectSingle = () => {
                 <div className='max-w-[20rem] max-h-[20m] mx-5 p-5 '>
                     <div className=''>
                         <p className='text-sm'>Preview:</p>
-                        <img src={imageSrc} alt='preview' className='w-[200px] h-auto'/>
+                        {/* <img src={imageSrc} alt='preview' className='w-[200px] h-auto'/> */}
+                        {!imageSrc ? <img src={project.attachments} alt="Attachment"/> : <img src={imageSrc} alt='preview'/>}
                     </div>
                   </div>
                 )}
@@ -189,38 +226,40 @@ const BugProjectSingle = () => {
             </div>
         </div>
         </div>
-}
+}         
         </div>
 {/* users */}
+  <div className='flex flex-col justify-center items-center'>
+  <div className='flex flex-col w-[500px] justify-start'>
+    <label className='bg-[#5E5E5E]'>Assign users</label>
+    <ul>
+      {notConnectedUsers && notConnectedUsers.map((user,index)=>(
+        <li 
+          onClick={() => handleUserClick(user.id)}
+          key={index}>
+          {user.id}: {user.name} 
+          {selectedIds.includes(user.id) && ' (Selected)'}
+        </li>
+      ))
+    }
+    </ul>
+    <button onClick={send_users} className='bug-btn'>Add selected users</button>
+  </div>
 
-        {users ? 
-        <div className='flex flex-colitems-center justify-center m-5 p-5'>
-          <label className='mt-5 w-auto'></label> 
-          <div className='flex items-center justify-center m-5 p-5'>
-            <table className='w-[70%]'>
-              <thead>
-                <tr>
-                  <th>
-                    Name
-                  </th>
-                  <th>
-                    Email
-                  </th>
-                </tr>
-                </thead>
-                <tbody>
-            {users.map((user)=>( 
-              <tr key={user.id}>
-                <td >{user.name}</td> 
-                <td>{user.email}</td>
-              </tr>
-            ))}
-            </tbody>
-            </table>
-          </div>
-        </div>
-        :
-        <div>Loading users...</div>}
+  <div className='flex flex-col justify-start mt-4 w-[500px]'>
+    <label className='bg-[#5E5E5E]'>Users, working on this project:</label>
+    <ul>  
+      {users ? users.map((user, index) => (
+        <li key={index} className='flex flex-row justify-between'>{user.id}: {user.name} 
+          <img src="del.svg" className='w-[15px] opacity-40 hover:cursor-pointer hover:opacity-100 ease-in duration-100' 
+          onClick={()=>dismiss_user(user.id)}/>
+        </li>
+      ))
+      :
+      <div>Loading users...</div>}
+    </ul>
+  </div>
+</div>
         <div className='tickets pt-10'>
             <label className='ml-[1%] text-sm'>
                 Project Tickets: 

@@ -72,15 +72,9 @@ const BHome = ({ ...props}) => {
   const onSearchResults = (searchResults) => {
     setTickets(searchResults)
     setLastPage(searchResults.last_page)
-    
-    console.log(searchResults.data)
-    console.log(Object.keys(searchResults.data).map((id) => {
-      return searchResults.data[id].status.filter(item=>item==='To Do')
-    }))
-    setDoneTickets(searchResults.data)
-    setDoneLastPage(searchResults.last_page)
-
-    setInProgressTickets(searchResults.data)
+    setDoneTickets(searchResults.data.filter(item=>item.status === 'Done'))
+    setDoneLastPage(searchResults.last_page) 
+    setInProgressTickets(searchResults.data.filter(item=>item.status === 'In Progress'))
     setInProgressLastPage(searchResults.last_page)
   }
   useEffect(()=>{
@@ -98,12 +92,12 @@ const BHome = ({ ...props}) => {
 {/* Projects */}
       <div className='info-container  overflow-scroll justify-start items-start'>
         {projects && Object.keys(projects).map((key, index)=>( 
-          <div key={key} className={`data-container min-w-[13em] max-w-[13em] ${index > -1 ? '' : 'ml-0'}`}>
+          <div key={key} className={`data-container min-w-[13em] max-w-[13em] overflow-y-auto bg-[#3b3b3b]`}>
             <Link to={`/bugtrag/projects/${projects[key].id}`}>
             <div className='opacity-40 blur '>
-              <img className='object-cover absolute opacity-30 ' src={projects[key].attachments}/>
+              <img className='object-cover absolute opacity-30 w-full ' src={projects[key].attachments}/>
             </div>
-            <div className='mb-3 text-lg border-b-2  border-inherit '>
+            <div className='mb-3 text-xl border-b-2  border-inherit '>
               {projects[key].name}
             </div>
             <div className='max-h-[200px] overflow-auto'>
@@ -111,6 +105,9 @@ const BHome = ({ ...props}) => {
             </div>
             <div className='text-sm align-baseline'>
               Open issues: <span>{projects[key].user_tickets.length}</span>
+            </div>
+            <div className='opacity-100 flex justify-center items-baseline p-2 '>
+              <img className='object-cover max-w-[12rem] max-h-[140px] ' src={projects[key].attachments}/>
             </div>
             </Link>
           </div>

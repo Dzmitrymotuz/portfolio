@@ -25,7 +25,7 @@ const Signup = ({...props}) => {
             setMessage(response.data.message)
             console.log('Login successful: ', response);
             if (response.status === 200) {
-                setToken(response.data.token)
+                // setToken(response.data.token)
                 login(response.data.user)
                 setUser(response.data.user)
                 setMessage(response.data.message)
@@ -55,6 +55,7 @@ const Signup = ({...props}) => {
                     <input name='password-confirmation' type='password' placeholder='password confirmation' className='input' onChange={(e)=>setPasswordConfirmation(e.target.value)}/>
                     <button type='submit' className='bug-btn mt-2'>Submit</button>
                 </div>
+                <div className='min-h-screen'/>
             </div>
             </form>
         </div>

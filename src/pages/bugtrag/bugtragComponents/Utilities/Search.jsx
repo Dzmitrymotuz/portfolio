@@ -13,15 +13,14 @@ const Search = ( { onSearchResults}) => {
             const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/bugtrag/tickets_search`, {
                 params : {query: query}
             })
+            console.log(response.data.tickets)
             onSearchResults(response.data.tickets)
         }catch(e){
             console.log(e.data)
         }
-    }       
+    }   
 
-
-
-
+    
   return (
     <div className='border-0'>
         <form onSubmit={(e)=>search(e)}>

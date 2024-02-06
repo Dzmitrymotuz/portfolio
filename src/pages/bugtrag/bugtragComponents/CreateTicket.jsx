@@ -149,6 +149,9 @@ const CreateTicket = () => {
             <button className='bug-btn w-[95%]' type='submit'>Submit</button>
         </form>
         </div>
+        <div className='h-screen'>
+
+        </div>
     </div>
   )
 }

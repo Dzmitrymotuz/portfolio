@@ -33,8 +33,8 @@ const BugNavBar = () => {
                         <p>Projects</p>
                     </NavLink>
                     <div className='flex flex-col pt-0'>
-                        <NavLink className='' to="/bugtrag/user">
-                        <p className='text-[#a7a7a7]'>{user ? user.name : ''}</p>
+                        <NavLink className='' to={`/bugtrag/user/${user.id}`}>
+                            <p className='text-[#a7a7a7]'>{user ? user.name : ''}</p>
                         </NavLink>
                         <NavLink to="/bugtrag/login" onClick={logout} className='text-[#a7a7a7] text-xs'>
                             logout

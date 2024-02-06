@@ -25,10 +25,11 @@ use App\Http\Controllers\Auth\RegisterController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/products', [ProductController::class, 'index']);
+// Route::get('/products', [ProductController::class, 'index']);
 
 Route::post('/signup', [RegisterController::class, 'signup']);
 Route::post('/login', [RegisterController::class, 'login']);
+Route::post('/logout', [RegisterController::class, 'logout']);
 
 // Butrag
 Route::get('/bugtrag', [UserTicketsController::class, 'fetch_tickets']);

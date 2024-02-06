@@ -25,6 +25,7 @@ class UserController extends Controller
             'old_password'=>'string',
             'new_password'=>'string',
         ]);
+        /** @var User $user */
         $user = Auth::user();
         $user->update(['password' => bcrypt($request->new_password)]);
         return response()->json(['message'=>'password updated', 'user'=>$user->name], 200);

@@ -34,9 +34,9 @@ const Login = ({ ...props}) => {
 
 
   return (
-    <div className='bug-main-container'>
+    <div className='bug-main-container '>
     {!isAuthenticated ? <section>
-        <div className='flex flex-col items-center justify-center min-h-screen m-[-100px]'>
+        <div className='flex flex-col items-center justify-center '>
             <p>Login Page</p>
             {message ? <div className='text-sm bg-[#ffd5d5] p-1 '>{message}</div> : ''}
             <div className='flex flex-col p-0 m-0'>
@@ -45,6 +45,7 @@ const Login = ({ ...props}) => {
                 <button onClick={(e)=>handleLogin(e)} className='bug-btn mt-2'>Login</button>
             </div>
         </div>
+        <div className='min-h-screen'/>
     </section> 
     :
     <div className='flex flex-col items-center  m-3 p-3'>Hello there. You're currently logged as {user.name}

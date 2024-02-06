@@ -608,6 +608,7 @@ tbody td {
     @apply flex justify-between items-center sm:px-20 max-w-[100%] absolute top-0 z-10 right-0 left-0;
   }
 }
+
   /* --bbg: #303030;
   --bf: #5E5E5E;
   --bt: #EEEEEE;

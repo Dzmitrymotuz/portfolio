@@ -9,18 +9,18 @@ import ContactMe from '../components/ContactMe';
 const About = () => {
   return(
     <section className='max-container'>
-      <h1 className='head-text'>
+      <h1 className='animate-down head-text'>
         Hello, I'm <span className='red-gradient_text drop-shadow'>Dimitry</span>
 
       </h1>
 
-      <div className='mt-5 flex flex-col gap-3 text-slate-500'>
+      <div className='animate-in-left mt-5 flex flex-col gap-3 text-slate-500'>
         <p>
         I'm a new software enthusiast in the United States, gaining practical experience in various tech environments. Over time, I've improved my skills, creating strong and adaptable solutions for different challenges. I'm passionate about coding, focusing on delivering top-notch software that fits each project's needs. I thrive in teamwork, using my tech knowledge to contribute to our collective success.        </p>
       </div>
       <div className='py-10 flex flex-col'>
-        <h3 className='subhead-text'>My Skills</h3>
-        <div className='mt-16 flex flex-wrap gap-12'>
+        <h3 className='animate-in-right subhead-text'>My Skills</h3>
+        <div className='animate-up mt-16 flex flex-wrap gap-12'>
           {skills.map((skill)=>(
             <div key={skill.name} className='block-container w-20 h-20'>
               <div className='btn-back rounded-x1'/>
@@ -32,10 +32,10 @@ const About = () => {
         </div>
       </div>
       <div className='py-16'>
-        <h3 className='subhead-text'>
+        <h3 className='animate-in-right subhead-text'>
           Work Experience
         </h3>
-        <div className='mt-5 flex flex-col gap-3 text-slate-500'>
+        <div className='animate-in-left mt-5 flex flex-col gap-3 text-slate-500'>
         <p>
             I've been working with various companies and picked up a lot of skills. Here is the rundown:
         </p>

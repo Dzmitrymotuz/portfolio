@@ -5,11 +5,19 @@ import { Environment, OrbitControls } from '@react-three/drei'
 import { project_files } from '../constants/ProjectFiles'
 import { Link } from 'react-router-dom'
 import ContactMe from '../components/ContactMe';
-
-
+import ImageSlider from '../components/ImageSlider'
 
 const Projects = () => {
-  const [state, setState] = useState(false)
+  const [state, setState] = useState([])
+
+  let list = []
+  const slides = project_files.map((project)=>{
+    project.images.map((image)=>{
+      list.push(image)
+    })
+  })
+  // console.log(project_files[0].images)
+  // console.log(list)
 
   const handleBallonPosition = () => {
     let universalPosition
@@ -46,39 +54,48 @@ const Projects = () => {
   }
 
   return (
-    <section className='w-full relative bg-[white]'>
-      <div className='absolute h-screen flex flex-col items-start p-5 m-10 justify-start z-9'>
-        <div className={`project_layer ${expanded ? 'expanded' : ''} w-90%`}>
-        <h1 className='head-text text-[#505050]'>My <span className='red-gradient_text font-semibold drop-shadow'>Projects</span></h1>
+    <section className='w-full relative bg-[#ffffff]'>
+      <div>
+        {/* NEW content
+        <div className='animate-fade-in w-screen h-screen m-auto'>
+          <ImageSlider slides={project_files[0].images}/>
+        </div> */}
+        
+      </div>
+
+
+      <div className='absolute h-screen flex flex-col items-start p-5 m-10 justify-start z-10 '>
+        <div className={`animate-in-left project_layer w-90%`}>
+        <h1 className='animate-down head-text text-[#505050]'>My <span className='red-gradient_text font-semibold drop-shadow'>Projects</span></h1>
+          <span className='animate-fade-in font-light sm:text-x1 text-left text-black font-poppins tracking-tight'>
           I love going on coding adventures! Check out my projects to see where I've been. I've built cool websites and dived into tricky tech stuff. Each project has its own story.
           Feel free to peek at the code and try out the demos. Come along on these code adventures with me. Every bit of code is a step into something new.
+          </span>
         </div>
-        {project_files.map((project)=>(
-          <div className='project_layer flex flex-col items-top' key={project.title}>
-            <div className='flex flex-row items-top'>
-            <div className='images'>
-                {project.images.map((image)=>(
-                  <div className='parent_float_container' key={image.name}>
-                    <img className='child_image' src={image.name} alt='img'/>
-                  </div>
-                ))}
-              </div>
-            <h1 className='head-text text-[#505050] red-gradient_text'>{project.title}</h1>
+        {project_files.map((project, index)=>(
+          <div className='animate-in-right  project_layer flex flex-col items-top' key={project.title}>
+            <div className='flex flex-row items-top '>
+            <h1 className='animate-down head-text text-[#505050] red-gradient_text'>{project.title}</h1>
           </div>
-          <div className='font-light sm:text-x1 text-left text-black font-poppins tracking-tight'>
+          <div className=' font-light sm:text-x1 text-left text-black font-poppins tracking-tight'>
             {project.description}
           </div>
-          <div className='flex flex-row items-center justify-end'>
-          <Link to={project.link} target='_blank' rel='noopener noreferrer' className='font-semibold red-gradient_text' style={{ 'z-index': '12'}}>See More</Link>
+          <div className='animate-in-right flex flex-row items-center justify-end'>
+          <Link to={project.link} target='_blank' rel='noopener noreferrer' className='font-semibold red-gradient_text' style={{ 'zIndex': '12'}}>See More</Link>
         </div>
-        </div>
+          {project.images.length > 0 ? 
+          <div className='animate-up h-[50dvh] w-full mb-5'>
+            <ImageSlider slides={project.images}/>
+          </div> : ''}
+        
+        </div> 
       ))}
             <div className='w-full h-24 p-20'></div>
             <ContactMe/>
       </div>
 
       
-      <Canvas className='w-full h-screen'
+      {/* <Canvas className='w-full h-screen'
       style={{position: 'fixed', pointerEvents: 'none'}}
       camera={{fov: 35, position: [0,0,10]}}
       >
@@ -100,7 +117,7 @@ const Projects = () => {
         rotation={[0,0,0]} />
         {state && <OrbitControls/>}
         </Suspense>
-      </Canvas>
+      </Canvas> */}
     </section>
   )
 }

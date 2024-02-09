@@ -38,7 +38,7 @@ const Login = ({ ...props}) => {
     {!isAuthenticated ? <section>
         <div className='flex flex-col items-center justify-center '>
             <p>Login Page</p>
-            {message ? <div className='text-sm bg-[#ffd5d5] p-1 '>{message}</div> : ''}
+            {message ? <div className='text-sm bg-[#303030] p-1 '>{message}</div> : ''}
             <div className='flex flex-col p-0 m-0'>
                 <input name='email' placeholder='email' className='input' onChange={(e)=>setEmail(e.target.value)}/>
                 <input name='password' placeholder='password' type='password' className='input' onChange={(e)=>setPassword(e.target.value)}/>

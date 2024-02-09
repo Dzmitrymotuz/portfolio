@@ -46,7 +46,7 @@ const Signup = ({...props}) => {
             <form onSubmit={(e) => handleSignup(e)}>
             <div className='flex flex-col items-center justify-center min-h-screen'>
                 <p>Signup</p>
-                {message ? <div className='text-sm bg-[#ffd5d5] p-1 '>{message}</div>
+                {message ? <div className='text-sm bg-[#303030] p-1 '>{message}</div>
                     : ''}
                 <div className='flex flex-col p-10 m-10 mt-0'> 
                     <input name='name' placeholder='name' className='input' onChange={(e)=>setName(e.target.value)}/>

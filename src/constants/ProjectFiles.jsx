@@ -20,14 +20,14 @@ export const project_files = [
 {
     title: 'Bugtrag',
     icon: restaurant,
-    description: 'Bug Tracker',
+    description: 'Bug Tracker is an application I developed to manage my development projects effectively. With token authorization implemented, it operates on the Laravel framework for the backend and is complemented by a React-based frontend. Crafting this app has been an exhilarating journey for me, and I aspire for it to provide value to others as well.',
     link: '/bugtrag',
     images: [],
 },
 {
     title: 'CryptoTracker',
     icon: crypto,
-    description: `This is the app I made, and it's all about cryptocurrencies. Dive into the world of digital assets with various functionalities powered by APIs. Stay updated on real-time market trends, explore historical data, and enjoy interactive features. Whether you're a crypto expert or just getting started, this app is designed to make understanding and navigating the cryptocurrency landscape easy and enjoyable.`,
+    description: `This is my cryptocurrency-focused app, leveraging a variety of APIs to streamline tracking and operations. It underscores the simplicity of working with and monitoring cryptocurrencies, making it a valuable tool in today's digital landscape.`,
     link: '/crypto',
     images: crypto_images,
 },

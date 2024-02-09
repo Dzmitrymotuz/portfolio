@@ -88,6 +88,67 @@ body:has(.card[data-color="green"]:hover) {
   }
 }
 
+/* ANIMATIONS */
+@keyframes fade-in {
+  0% {opacity: 0; }
+  100% {opacity: 1; }
+}
+.animate-fade-in{
+  animation: fade-in 1s ease-out forwards;
+}
+@keyframes animate-in-left {
+0% {
+  opacity: 0;
+  transform: translateX(100%);
+}
+100%{
+  opacity: 1;
+  transform: translateX(0);
+}
+}
+.animate-in-left {
+  animation: animate-in-left 1s ease-out forwards;
+}
+@keyframes animate-in-right {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100%{
+    opacity: 1;
+    transform: translateX(0);
+  }
+  }
+  .animate-in-right {
+    animation: animate-in-right 1s ease-out forwards;
+  }
+@keyframes animate-up {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100%{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-up {
+  animation: animate-up 1.5s ease-out;
+}
+@keyframes animate-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100%{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-down {
+  animation: animate-down 1.5s ease-out;
+}
+
 .glassmorphism {
   background: rgba(8, 116, 239, 0.07);
   backdrop-filter: blur(10px);
@@ -193,11 +254,11 @@ body:has(.card[data-color="green"]:hover) {
 }
 
 .project_layer{
-  width: 50%;
+  width: 90%;
   height: auto;
   padding: 20px;
   margin: 2% 10px 8px 10px;
-  margin-left: 10%;
+  margin-left: 5%;
   background-color: rgba(136, 216, 176, 0.1);
   transition: all 0.5s ease;
   gap: 16px;

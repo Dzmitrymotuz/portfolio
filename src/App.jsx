@@ -17,6 +17,7 @@ import BugProjectSingle from './pages/bugtrag/bugtragComponents/BugProjectSingle
 import CreateProject from './pages/bugtrag/bugtragComponents/CreateProject'
 import User from './pages/bugtrag/bugtragComponents/User'
 import AbstractRoute from './pages/bugtrag/bugtragComponents/Utilities/AbstractRoute'
+import Main404 from './pages/main404'
 
 
 
@@ -40,6 +41,7 @@ const App = () => {
             <Route path='/game' element={<Game/>}/>
             <Route path='/crypto' element={<Crypto setShowNavBar={setShowNavBar}/>}/>
             <Route path='/crypto/:id' element={<ShowCurrency setShowNavBar={setShowNavBar}/>}/>
+            <Route path='*' element={<Main404 setShowNavBar={setShowNavBar}/>} />
             </Routes>
             </>
           }
@@ -54,9 +56,10 @@ const App = () => {
                   <Routes>
                     <Route path='/login' element={<Login />}/>
                     <Route path='/signup' element={<Signup />}/>
-                    <Route path='/' element={<AbstractRoute />}>
+                    {/* <Route path='/' element={<AbstractRoute />}>
                       <Route path='/' element={<BHome />}/>
-                    </Route>
+                    </Route> */}
+                    <Route path='/' element={<BHome />}/>
                     <Route path='/ticket/:id' element={<AbstractRoute />}>
                       <Route path='/ticket/:id' element={<Ticket />}/>
                     </Route>

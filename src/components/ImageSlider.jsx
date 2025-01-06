@@ -32,7 +32,7 @@ const ImageSlider = ({slides}) => {
          〉
         </div>
         <div 
-        className=' bg-cover items-center h-[100%] w-[100%]'   
+        className=' bg-cover items-center h-[100%] w-[100%] transition-linear duration-500'    
         style={{backgroundImage: `url(${slides[currentIndex].name})`}}>
         </div>
         <div className='flex flex-row justify-center'>
@@ -41,7 +41,7 @@ const ImageSlider = ({slides}) => {
                 className='mr-[3px] opacity-30 hover:opacity-100 cursor-pointer transition-linear duration-300 text-[#ff9068] text-[20px] '
                 onClick={()=>goToSlide(index)}
                 >
-                    ●
+                    {/* ● */}
                 </div>
             ))}
         </div>

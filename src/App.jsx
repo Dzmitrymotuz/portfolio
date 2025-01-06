@@ -19,6 +19,7 @@ import User from './pages/bugtrag/bugtragComponents/User'
 import AbstractRoute from './pages/bugtrag/bugtragComponents/Utilities/AbstractRoute'
 import Main404 from './pages/main404'
 import Sort from './pages/Sort'
+import HomeModern from './pages/HomeModern'
 
 
 
@@ -30,6 +31,7 @@ const App = () => {
     <Router> 
         <AuthProvider>
         <Routes>
+          <Route path='/' element={<HomeModern/>}/>
           <Route path="/*"
           element={
             <>

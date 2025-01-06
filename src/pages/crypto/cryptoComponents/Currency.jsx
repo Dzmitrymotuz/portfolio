@@ -15,15 +15,30 @@ const Currency = ({handleCurrencyData, ...props}) => {
         try {
             const response = await fetch('https://api.coingecko.com/api/v3/search/trending');
             const data = await response.json();
-            setCoins(data.coins.map(coin=>{
-                return {
-                    id: coin.item.id,
-                    name: coin.item.name,
-                    image: coin.item.large,
-                    price: coin.item.price_btc,
-                    market_cap_rank: coin.item.market_cap_rank
-                }
-            }))
+            if (data.coins.length > 0){
+                setCoins(data.coins.map(coin=>{
+                    return {
+                        id: coin.item.id,
+                        name: coin.item.name,
+                        image: coin.item.large,
+                        price: coin.item.price_btc,
+                        market_cap_rank: coin.item.market_cap_rank
+                    }
+                }))
+            }else{
+                const response = await fetch(`https://api.coingecko.com/api/v3/search?query=bitcoin`);
+                const data = await response.json();
+                setCoins(data.coins.map(coin=>{
+                    return {
+                        id: coin.id,
+                        name: coin.name,
+                        image: coin.large,
+                        price: '---',
+                        market_cap_rank: coin.market_cap_rank
+                    }
+                }))
+            }
+            // console.log(data)
             handleCurrencyData(data);
         } catch (error) {
             setCoins(coins)
@@ -73,21 +88,21 @@ const Currency = ({handleCurrencyData, ...props}) => {
     </div>
         <table className='table w-[90%]'>
             <thead>
-                <tr>
-                    <th> </th>
-                    <th>Coin </th>
-                    <th>Rank</th>
-                    <th>Price</th> 
+                <tr className='crypto-tr'>
+                    <th className='crypto-th'> </th>
+                    <th className='crypto-th'>Coin </th>
+                    <th className='crypto-th'>Rank</th>
+                    <th className='crypto-th'>Price</th> 
                 </tr>
             </thead>
             <tbody>
                 {coins.map((coin)=>(
-                    <tr key={coin.id}>
-                        <td className='flex justify-center '>
+                    <tr key={coin.id} className='crypto-tr'>
+                        <td className='flex justify-center crypto-td'>
                             <img src={coin.image} className='coin_image' alt={coin.name}/>
                         </td>
                         <td>
-                        <Link className='text-bold' to={`${coin.id}`}>
+                        <Link className='text-bold hover:text-[#3e3693]' to={`${coin.id}`}>
                             {coin.name}
                         </Link>
                         </td> 

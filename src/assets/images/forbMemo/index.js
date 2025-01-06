@@ -1,6 +1,6 @@
-import fm1 from './fm1.png'
-import fm2 from './fm2.png'
-import fm3 from './fm3.png'
+import fm1 from './fm1.jpg'
+import fm2 from './fm2.jpg'
+import fm3 from './fm3.jpg'
 
 export const fmpics = [
     {

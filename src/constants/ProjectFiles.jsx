@@ -1,28 +1,27 @@
 import React from 'react'
-import Factory from '../assets/images/MFac.jpg'
 import airbaloon from '../assets/images/airballoon.svg'
 import restaurant from '../assets/images/restaurant.svg'
-import store from '../assets/images/store.svg'
 import crypto from '../assets/images/crypto.svg'
 import ark from '../assets/images/ark.png'
-import arki from '../assets/images/arki.webp'
 import { crypto_images } from '../assets/images/cryptoShots'
 import { fmpics } from '../assets/images/forbMemo'
+import { ssimages } from '../assets/images/SelfScrumImages'
+import { bugTragimages } from '../assets/images/BugTragImages'
 
 export const project_files = [
 {
-    title: 'Fragile Memories',
+    title: 'SelfScrum',
     icon: airbaloon,
-    description: 'A sweet journey to my own Neverland. A place in history where the most fragile memories live. Yellow house on a warm dusk and a flying stork. Storks have always been an important symbol for me. The scene itself sends us to the cozy and secluded place where noone grows old and never suffers. It is like drifting in a river of happiness and dreams.',
-    link: '/',
-    images: fmpics,
+    description: 'We all need some sort of a daily organizer, and the Scrum methodology has proved its worth. So, I decided to combine these two things and created a web app that helps me and others organize their day. It also provides detailed statistics on how and where the user was effective.',
+    link: 'https://selfscrum.dzmitrymotuz.com/goals',
+    images: ssimages,
 },
 {
     title: 'Bugtrag',
     icon: restaurant,
     description: 'Bug Tracker is an application I developed to manage my development projects effectively. With token authorization implemented, it operates on the Laravel framework for the backend and is complemented by a React-based frontend. Crafting this app has been an exhilarating journey for me, and I aspire for it to provide value to others as well.',
     link: '/bugtrag',
-    images: [],
+    images: bugTragimages,
 },
 {
     title: 'CryptoTracker',
@@ -31,6 +30,13 @@ export const project_files = [
     link: '/crypto',
     images: crypto_images,
 },
+{
+    title: 'Fragile Memories',
+    icon: airbaloon,
+    description: 'A sweet journey to my own Neverland. A place in history where the most fragile memories live. Yellow house on a warm dusk and a flying stork. Storks have always been an important symbol for me. The scene itself sends us to the cozy and secluded place where noone grows old and never suffers. It is like drifting in a river of happiness and dreams.',
+    link: '/',
+    images: fmpics,
+}
 ]
 
 export const workExperiences = [

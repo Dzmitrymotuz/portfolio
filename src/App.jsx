@@ -18,6 +18,7 @@ import CreateProject from './pages/bugtrag/bugtragComponents/CreateProject'
 import User from './pages/bugtrag/bugtragComponents/User'
 import AbstractRoute from './pages/bugtrag/bugtragComponents/Utilities/AbstractRoute'
 import Main404 from './pages/main404'
+import Sort from './pages/Sort'
 
 
 
@@ -38,10 +39,11 @@ const App = () => {
             <Route path='/about' element={<About/>}/>
             <Route path='/projects' element={<Projects/>}/>
             <Route path='/contact' element={<Contact/>}/>
-            <Route path='/game' element={<Game/>}/>
             <Route path='/crypto' element={<Crypto setShowNavBar={setShowNavBar}/>}/>
             <Route path='/crypto/:id' element={<ShowCurrency setShowNavBar={setShowNavBar}/>}/>
             <Route path='*' element={<Main404 setShowNavBar={setShowNavBar}/>} />
+            <Route path='/game' element={<Game/>}/>
+            <Route path='/sort' element={<Sort setShowNavBar={setShowNavBar}/>}/> 
             </Routes>
             </>
           }

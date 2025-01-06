@@ -21,12 +21,12 @@ const ImageSlider = ({slides}) => {
 
   return (
     <div className='h-[100%] relative'>
-        <div className='absolute top-[50%] left-[22px] text-[45px] text-[#ff9068] z-10 opacity-30 hover:opacity-100 cursor-pointer transition-linear duration-300'
+        <div className='absolute top-[50%] left-[0px] text-[45px] text-[#ff9068] z-10 opacity-30 hover:opacity-100 cursor-pointer transition-linear duration-300'
         onClick={goToPrevious}
         >
         〈    
         </div>
-        <div className='absolute  top-[50%] right-[22px] text-[45px] text-[#ff9068] z-10 opacity-30 hover:opacity-100 cursor-pointer transition-linear duration-300'
+        <div className='absolute  top-[50%] right-[0px] text-[45px] text-[#ff9068] z-10 opacity-30 hover:opacity-100 cursor-pointer transition-linear duration-300'
             onClick={goToNext}
         >   
          〉

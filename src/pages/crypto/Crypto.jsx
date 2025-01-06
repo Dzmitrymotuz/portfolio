@@ -16,31 +16,17 @@ const Crypto = ({setShowNavBar, ...props}) => {
       setCurrencyData(data)
     }
 
-    const fetchProducts = async () => {
-        try {
-            const response = await fetch(`${api}/api/products`);
-            if (response.ok) {
-                const data = await response.json();
-                setProducts(data);
-            } else {
-                console.error('Error fetching products -', response.statusText);
-            }
-        }catch (error) {
-            console.error('Error fetching products:', error);
-        }
-    }
-
   useEffect(()=>{
-    fetchProducts()
+    // fetchProducts()
 
     setShowNavBar(false)
   }, [setShowNavBar])
 
 
   return (
-    <div className='crypto-page'>
+    <div className='crypto-page min-h-screen'>
       <Link to='/'>
-        <div className='absolute ml-[90%] text-sm text-[#F28500]'>Back to main site</div>
+        <div className='absolute ml-[90%] text-sm text-[#F28500]' onClick={()=>setShowNavBar(true)}>Back to main site</div>
       </Link>
       <Currency 
       handleCurrencyData={handleCurrencyData}

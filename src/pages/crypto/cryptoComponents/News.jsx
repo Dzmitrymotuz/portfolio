@@ -13,7 +13,7 @@ const News = ({currencyData, ...props}) => {
           const response = await fetch('https://api.coingecko.com/api/v3/exchanges?per_page=5');
             
           const data = await response.json();
-          console.log(data)
+          // console.log(data)
           setNews(data.map((item)=>{
             return {
               id: item.id,

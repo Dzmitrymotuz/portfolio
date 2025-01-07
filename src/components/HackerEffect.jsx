@@ -26,9 +26,9 @@ const HackerEffect = ({text}) => {
 
   return (
     <div
-    className='text-indigo-200 text-7xl '
+    className='text-6xl'
     style={{ fontFamily: '"Jersey 15", sans-serif' }}
-    onMouseOver={hackerEffect}>{displayedText.toUpperCase()}</div>
+    >{displayedText.toUpperCase()}</div>
   )
 }
 

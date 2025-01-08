@@ -30,15 +30,17 @@ const App = () => {
    <main className='bg-slate-300/20'>
     <Router> 
         <AuthProvider>
-        <Routes>
-          <Route path='/' element={<HomeModern/>}/>
-          <Route path="/*"
+        <Routes> 
+
+          <Route path="/*" 
           element={
             <>
             {showNavBar && <Navbar/>}
             <Routes>
-            <Route path='/' element={<Home/>}/>
+            <Route path='/oldhome' element={<Home/>}/>
+            <Route path='/' element={<HomeModern/>}/>
             <Route path='/about' element={<About/>}/>
+
             <Route path='/projects' element={<Projects/>}/>
             <Route path='/contact' element={<Contact/>}/>
             <Route path='/crypto' element={<Crypto setShowNavBar={setShowNavBar}/>}/>

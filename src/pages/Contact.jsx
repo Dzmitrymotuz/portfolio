@@ -43,17 +43,17 @@ const Contact = () => {
   }
 
   return (
-    <section className='relative flex lg:flex-row flex-col max-container'>
+    <section className='relative flex lg:flex-row flex-col max-container bg-[rgb(6,11,25)]'>
       <div className='flex-1 min-w-[50%] flex flex-col'>
-        <h1 className=' animate-in-right head-text'>Get in touch</h1>
+        <h1 className=' animate-in-right head-text text-gray-200' >Get in touch</h1>
         <form className=' w-full flex flex-col gap-7 mt-14'
           onSubmit={handleSubmit}>
-          <label className=' text-black-500 font-semibold'>
+          <label className=' text-gray-500 font-semibold'>
             Name
             <input
               type='text'
               name='name'
-              className='input'
+              className='input bg-[rgb(6,11,25)]'
               placeholder='ex: John'
               required
               value={form.name}
@@ -62,7 +62,7 @@ const Contact = () => {
               onBlur={handleBlur}
               />
           </label>
-          <label className='text-black-500 font-semibold'>
+          <label className='text-gray-500 font-semibold'>
             Email
             <input
               type='text'
@@ -76,7 +76,7 @@ const Contact = () => {
               onBlur={handleBlur}
               />
           </label>
-          <label className='text-black-500 font-semibold'>
+          <label className='text-gray-500 font-semibold'>
             Your Message
             <textarea
               name='message'

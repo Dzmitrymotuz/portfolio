@@ -44,7 +44,7 @@ export const workExperiences = [
         title: "Software QA Analyst",
         company_name: "Ark Ideas",
         icon: ark,
-        iconBg: "#ace1af",
+        iconBg: "#accbe1",
         date: "May 2020 - Present",
         points: [
             "Developing and maintaining tests using Laravel, PHP, Python, Angular, Vue and other related technologies.",
@@ -57,7 +57,7 @@ export const workExperiences = [
         title: "Software QA Analyst",
         company_name: "InVerita",
         icon: crypto,
-        iconBg: "#accbe1",
+        iconBg: "#040b4d",
         date: "Nov 2019 - April 2022",
         points: [
             "Performing black-box testing for Mobile and Web based applications",

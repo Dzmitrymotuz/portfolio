@@ -11,13 +11,13 @@ const Modal = ({setModalOpen, modalOpen}) => {
     <div 
     className={`fixed top-0 left-0 h-[100vh] w-full bg-[rgb(6,11,25)] rounded-lg  p-10  overflow-hidden  z-[50] animate-slide-down`}>
             <nav className=' flex flex-col items-center justify-center h-full gap-10'>
-                <NavLink to="/about" className={({isActive})=>!isActive ? 'text-[#676e87] hover:text-[#47516e]' : 'text-[#ff6f69]'}>
+                <NavLink to="/about" className={({isActive})=>!isActive ? 'text-[#676e87] hover:text-[#47516e]' : 'text-[#49588c]'} onClick={()=>setModalOpen(prevState=>!prevState)}>
                     <HackerEffect text="About"/>
                 </NavLink>
-                <NavLink to="/projects" className={({isActive})=>!isActive ? 'text-[#676e87] hover:text-[#47516e]' : 'text-[#ff6f69]'}>
+                <NavLink to="/projects" className={({isActive})=>!isActive ? 'text-[#676e87] hover:text-[#47516e]' : 'text-[#49588c]'} onClick={()=>setModalOpen(prevState=>!prevState)}>
                     <HackerEffect text="Projects"/>
                 </NavLink>
-                <NavLink to="/contact" className={({isActive})=>!isActive ? 'text-[#676e87] hover:text-[#47516e]' : 'text-[#ff6f69]'}>
+                <NavLink to="/contact" className={({isActive})=>!isActive ? 'text-[#676e87] hover:text-[#47516e]' : 'text-[#49588c]'} onClick={()=>setModalOpen(prevState=>!prevState)}>
                     <HackerEffect text="Contact"/>
                 </NavLink>
             <div className='flex gap-10'>

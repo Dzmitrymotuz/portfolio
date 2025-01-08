@@ -43,7 +43,7 @@ const Contact = () => {
   }
 
   return (
-    <section className='relative flex lg:flex-row flex-col max-container bg-[rgb(6,11,25)]'>
+    <section className='relative flex lg:flex-row flex-col max-container bg-[rgb(6,11,25)] border-t-2 border-[#141e3b]'>
       <div className='flex-1 min-w-[50%] flex flex-col'>
         <h1 className=' animate-in-right head-text text-gray-200' >Get in touch</h1>
         <form className=' w-full flex flex-col gap-7 mt-14'
@@ -53,7 +53,7 @@ const Contact = () => {
             <input
               type='text'
               name='name'
-              className='input bg-[rgb(6,11,25)]'
+              className='input-dark bg-[rgb(6,11,25)]'
               placeholder='ex: John'
               required
               value={form.name}
@@ -67,7 +67,7 @@ const Contact = () => {
             <input
               type='text'
               name='email'
-              className='input'
+              className='input-dark'
               placeholder='example@gmail.com'
               required
               value={form.email}
@@ -81,7 +81,7 @@ const Contact = () => {
             <textarea
               name='message'
               rows={5}
-              className='textarea'
+              className='textarea-dark'
               placeholder='Let me know if I can help!'
               required
               value={form.message}
@@ -92,7 +92,7 @@ const Contact = () => {
           </label>
           <button
           type="submit"
-          className='btn animate-up'
+          className='btn-dark animate-up'
           disabled={isLoading}
           onFocus={handleFocus}
           onBlur={handleBlur}

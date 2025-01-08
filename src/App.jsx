@@ -31,16 +31,14 @@ const App = () => {
     <Router> 
         <AuthProvider>
         <Routes> 
-
+            <Route path='/oldhome' element={<Home/>}/> 
           <Route path="/*" 
           element={
             <>
             {showNavBar && <Navbar/>}
             <Routes>
-            <Route path='/oldhome' element={<Home/>}/>
             <Route path='/' element={<HomeModern/>}/>
-            <Route path='/about' element={<About/>}/>
-
+            <Route path='/about' element={<About/>}/> 
             <Route path='/projects' element={<Projects/>}/>
             <Route path='/contact' element={<Contact/>}/>
             <Route path='/crypto' element={<Crypto setShowNavBar={setShowNavBar}/>}/>

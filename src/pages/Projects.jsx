@@ -69,7 +69,7 @@ const Projects = () => {
             {project.description}
           </div>
           <div className=' flex flex-row items-center justify-end'>
-          <Link to={project.link} target='_blank' rel='noopener noreferrer' className='font-semibold red-gradient_text' style={{ 'zIndex': '12'}}>See More</Link>
+          <Link to={project.link} target='_blank' rel='noopener noreferrer' className=' font-poppins text-[#676e87] hover:text-gray-300 transition-all ease-in delay-100' >See More</Link>
         </div>
           {project.images.length > 0 ? 
           <div className='image_slider items-center mb-7 w-auto

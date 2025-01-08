@@ -52,13 +52,22 @@ body:has(.card[data-color="green"]:hover) {
   .input {
     @apply bg-white border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-2.5 font-normal shadow-card;
   }
+  .input-dark {
+    @apply bg-black border border-[#141e3b] text-gray-400 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-2.5 font-normal shadow-card;
+  }
 
   .textarea {
     @apply block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-200 focus:ring-blue-500 focus:border-blue-500 mt-2.5 font-normal shadow-card;
   }
+  .textarea-dark {
+    @apply block p-2.5 w-full bg-black border-[#141e3b] text-gray-400 text-lg rounded-lg border focus:ring-blue-500 focus:border-blue-500 mt-2.5 font-normal shadow-card;
+  }
 
   .btn {
     @apply text-white bg-gradient-to-r from-[#ffcc5c] to-[#ff6f69] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center;
+  }
+  .btn-dark {
+    @apply text-gray-300 bg-gradient-to-r from-[#141e3b] to-[rgb(6,11,25)] focus:ring-4 focus:outline-none focus:ring-gray-700 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center;
   }
 
   .header {

@@ -13,7 +13,7 @@ const About = () => {
   return(
       <div className='bg-[rgb(6,11,25)] m-0 text-gray-200'>  
       <h1 className=' head-text m-5 mt-0 border-t-2 border-[#141e3b]'>
-        Hello, I'm <span className='red-gradient_text drop-shadow'>Dimitry</span> 
+        Hello, I'm <span className='text-[#c304d1] drop-shadow'>Dimitry</span> 
       </h1> 
       <div className='animate-in-left  flex flex-col gap-3 text-gray-500 border-b-2 border-[#141e3b] p-5'>
         <p>

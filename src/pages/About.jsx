@@ -11,14 +11,15 @@ import { useState } from 'react';
 
 const About = () => {
   return(
-      <div className='bg-[rgb(6,11,25)] m-0 text-gray-200'>  
-      <h1 className=' head-text m-5 mt-0 border-t-2 border-[#141e3b]'>
-        Hello, I'm <span className='text-[#c304d1] drop-shadow'>Dimitry</span> 
+      <div className='bg-[rgb(6,11,25)] m-0 text-gray-200 font-poppins'>  
+      <h1 className=' head-text m-5 mt-0 border-t-2 border-[#141e3b] mb-0'>
+        Hello, I'm <span className='text-[#763ad6] drop-shadow'>Dimitry</span> 
       </h1> 
-      <div className='animate-in-left  flex flex-col gap-3 text-gray-500 border-b-2 border-[#141e3b] p-5'>
-        <p>
-        I'm a new software enthusiast in the United States, gaining practical experience in various tech environments. Over time, I've improved my skills, creating strong and adaptable solutions for different challenges. I'm passionate about coding, focusing on delivering top-notch software that fits each project's needs. I thrive in teamwork, using my tech knowledge to contribute to our collective success.        </p>
-      </div>
+      <div className='animate-in-left  flex flex-col gap-3 text-gray-400 border-b-2 border-[#141e3b] p-5 pt-0'>
+        <p> 
+        I’m a passionate software engineer based in the United States, turning creative ideas into impactful, real-world solutions. With hands-on experience across diverse tech environments, I’ve sharpened my skills to design and build adaptable, high-performing software that truly makes a difference. Coding isn’t just my profession—it’s my craft. I’m driven by the excitement of solving complex problems and delivering exceptional results that exceed expectations. I thrive in dynamic, collaborative teams, where I can combine my technical expertise with a shared vision to create meaningful innovations. For me, every line of code is a step toward shaping something extraordinary.      
+        </p>
+        </div>
       <div className='py-10 flex flex-col m-5 border-b-2 border-[#141e3b]'>
         <h3 className='animate-in-right subhead-text'>My Skills</h3>
         <div className='animate-up mt-16 flex flex-wrap gap-12 content-center justify-center'>

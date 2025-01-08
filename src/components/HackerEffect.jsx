@@ -26,7 +26,7 @@ const HackerEffect = ({text}) => {
 
   return (
     <div
-    className='text-6xl'
+    className='text-3xl'
     style={{ fontFamily: '"Jersey 15", sans-serif' }}
     onMouseEnter={hackerEffect}
     >{displayedText.toUpperCase()}</div>

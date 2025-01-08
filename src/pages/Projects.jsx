@@ -49,11 +49,11 @@ const Projects = () => {
   }
 
   return (
-    <section className='bg-[rgb(6,11,25)] m-0 text-gray-200 text-gray-400 flex justify-center border-t-2 border-[#141e3b]'> 
+    <section className='bg-[rgb(6,11,25)] m-0 text-gray-200 text-gray-400 flex justify-center border-t-2 border-[#141e3b] font-poppins'> 
       <div className='w-full md:w-[70%] lg:w-[50%] flex-col p-5 '>
         <div className={`border-r-2 border-r-[#141e3b] mb-10`}>
           <HackerEffect text='My Projects'/>
-          <span className='animate-up font-light sm:text-x1 text-left font-poppins tracking-tight'>
+          <span className='animate-up font-light sm:text-x1 text-left tracking-tight'>
           I love going on coding adventures! Check out my projects to see where I've been. I've built cool websites and dived into tricky tech stuff. Each project has its own story.
           Feel free to peek at the code and try out the demos. Come along on these code adventures with me. Every bit of code is a step into something new.
           </span>
@@ -65,11 +65,11 @@ const Projects = () => {
               <HackerEffect text={project.title}/>
             </h1>
           </div>
-          <div className='animate-up font-light sm:text-x1 text-left font-poppins tracking-tight'>
+          <div className='animate-up font-light sm:text-x1 text-left  tracking-tight'>
             {project.description}
           </div>
           <div className=' flex flex-row items-center justify-end'>
-          <Link to={project.link} target='_blank' rel='noopener noreferrer' className=' font-poppins text-[#676e87] hover:text-gray-300 transition-all ease-in delay-100' >See More</Link>
+          <Link to={project.link} target='_blank' rel='noopener noreferrer' className='  text-[#676e87] hover:text-gray-300 transition-all ease-in delay-100' >See More</Link>
         </div>
           {project.images.length > 0 ? 
           <div className='image_slider items-center mb-7 w-auto

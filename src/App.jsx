@@ -21,6 +21,8 @@ import Main404 from './pages/main404'
 import Sort from './pages/Sort'
 import HomeModern from './pages/HomeModern'
 
+import JuliaLanding from './pages/Julia/JuliaLanding'
+
 
 
 const App = () => {
@@ -32,6 +34,7 @@ const App = () => {
         <AuthProvider>
         <Routes> 
             <Route path='/oldhome' element={<Home/>}/> 
+            <Route path='/julia' element={<JuliaLanding/>}/> 
           <Route path="/*" 
           element={
             <>

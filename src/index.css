@@ -408,7 +408,7 @@ body .crypto-page {
   height: 100px;
   display: flex;
   flex-direction: row;
-  align-items: start;
+  align-items: flex-start;
   justify-content: space-between;
   margin: 10px 20px 20px 20px;
   border-radius: 9px;
@@ -690,7 +690,7 @@ tbody td {
     height: 100px;
     display: flex;
     flex-direction: row;
-    align-items: start;
+    align-items: flex-start;
     justify-content: space-between;
     margin: auto;
     margin-left: -10%;

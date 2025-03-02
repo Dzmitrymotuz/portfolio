@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { useState } from 'react';
-import logo from '../../public/dm.png'
+import logo from '/dm.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInstagram, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 import Modal from '../pages/Modal'
